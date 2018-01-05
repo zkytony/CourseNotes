@@ -1,0 +1,126 @@
+\begin{definition}[Norm]
+ The \emph{norm}, or magnitude of a vector $\bm{a}\in\mathbb{R}^n$ is defined as the \emph{L2-norm} of the vector.
+ \begin{equation}
+     |\bm{a}|=\sqrt{\sum_{i=1}^{n}a_i^2}
+ \end{equation}
+\end{definition}
+
+\begin{definition}[Dot Product]
+\emph{(Algebraic definition)} Let $\bm{a}$ and $\bm{b}$ be two vectors in $\bm{R}^n$. Then the dot product (or inner product) between $\bm{a}$ and $\bm{b}$ is defined as:
+    \begin{equation}
+        \bm{a}\cdot\bm{b}=\bm{a}^T\bm{b}=\sum_{i=1}^{n}a_ib_i
+    \end{equation}
+    
+\emph{(Geometric definition)}  The dot product of two Euclidean vectors $\bm{a}$ and $\bm{b}$ is defined by
+    \begin{equation}
+        \bm{a}\cdot\bm{b}=|\bm{a}||\bm{b}|cos(\theta_{\bm{a},\bm{b}})
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Outer Product]
+Let $\bm{a}$ and $\bm{b}$ be two vectors in $\bm{R}^n$. Then the outer product (or tensor product) between $\bm{a}$ and $\bm{b}$ is defined such that $(\bm{a}\bm{b}^T)_{ij}=a_ib_j$:
+    \begin{align}
+        \bm{a}\bm{b}^T&=\begin{bmatrix}
+        a_1b_1 & a_1b_2 & \cdots & a_1b_n\\
+        a_2b_1 & a_2b_2 & \cdots & a_2b_n\\
+        \vdots & \vdots & \ddots & \vdots\\
+        a_nb_1 & a_nb_2 & \cdots & a_nb_n\\
+        \end{bmatrix}
+    \end{align}
+\end{definition}
+
+
+\begin{definition}[Linear Combination]
+If $\bm{u}_1, \bm{u}_2, \cdots \bm{u}_m$ are vectors and $c_1, c_2\cdots c_m$ are scalars, then
+    $c_1\bm{u}_1+c_2\bm{u}_2+\cdots+c_m\bm{u}_m$
+is a linear combination of the vectors.
+\end{definition}
+
+\begin{definition}[Span]
+Let $\{\bm{u}_1,\cdots,\bm{u}_m\}$ be a set of $m$ vectors in $\mathbb{R}^n$. The $span$ of the set is the set of linear combinations of $\bm{u}_1\cdots\bm{u}_m$.
+\end{definition}
+For example, suppose
+$\bm{u}_1=\begin{bmatrix}
+1\\2\\3\\
+\end{bmatrix}$
+and
+$\bm{u}_2=\begin{bmatrix}
+3\\2\\1\\
+\end{bmatrix}$
+, what is the span of $\{\bm{u}_1, \bm{u}_2\}$?
+A vector $\bm{v}=\begin{bmatrix}a\\b\\c\end{bmatrix}\in$ span$\{\bm{u}_1,\bm{u}_2\}$
+if and only if $\exists s, t \bm{.} s\bm{u}_1 + t\bm{u}_2=\begin{bmatrix}a\\b\\c\end{bmatrix}$. $s, t$ exist if 
+$
+    \begin{bmatrix}
+    1 & 3 & a\\
+    2 & 2 & b\\
+    3 & 1 & c
+    \end{bmatrix}
+$ has a solution. This matrix is reduced to $
+    \begin{bmatrix*}[l]
+    1 & 3 & a\\
+    0 & 4 & 2a-b\\
+    0 & 0 & a-2b+c
+    \end{bmatrix*}
+$, therefore it has a solution when $a-ab+c=0$ holds. So the $\emph{span}$ of $\{\bm{u}_1, \bm{u}_2\}$ is the plane $x-2y+z=0$. 
+
+\begin{definition}[Relation of Span and Augmented Matrix]
+If a vector $\bm{v}$ is in the span of vectors $\{\bm{u}_1, \cdots, \bm{u}_m\}$ then the matrix $[\bm{u}_1\ \cdots\ \bm{u}_m \ \bm{v}]$ has at least 1 solution.
+\end{definition}
+
+\begin{theorem}[Relation of Span and Linearly Independence]
+If $\bm{u}\in\emph{span}\{\bm{u}_1,\cdots,\bm{u}_m\}$ then $\emph{span}\{\bm{u}_1,\cdots,\bm{u}_m\}=\emph{span}\{\bm{u},\bm{u}_1,\cdots,\bm{u}_m\}$ 
+\end{theorem}
+
+\subsection{Linear independence}
+\begin{definition}[Linear Independence]
+Let $\{\bm{u}_1,\cdots,\bm{u}_m\}$ be a set of vectors in $\mathbb{R}^n$. If the only solution to the equation $x_1\bm{u}_1+\cdots+x_m\bm{u}_m=0$ is the trivial solution (i.e. all zeros), then $\bm{u}_1cdots\bm{u}_m$ are \emph{linearly independent}.
+\end{definition}
+Fact: If any set of vector contains $\bm{0}$, this set of vectors are not linearly independent.
+
+\begin{definition}[Orthonormal Vectors]
+Vectors in a set $\mathcal{U}=\{\bm{u}_1,\cdots\bm{u}_m\}$ are \emph{orthonormal} if every vector in $\mathcal{U}$ is a unit vector and every pair $\bm{u_i},\bm{u_j}\in\mathcal{U}$ of vectors are orthogonal, i.e. $\bm{u_i}^T\bm{u_j}=0$.
+\end{definition}
+
+\begin{theorem}
+Every set of orthonormal vectors is linearly independent (i.e. the vectors in the set are linearly independent).
+\end{theorem}
+
+\subsection{Linear dependence}
+\begin{theorem}[Linear Dependence]
+Let $\{\bm{u}_1,\cdots,\bm{u}_m\}$ be a set of vectors in $\mathbb{R}^n$. If $n<m$, the set is \emph{linearly dependent}.
+\end{theorem}
+
+\begin{corollary}[Relation of Span and Linearly Independence]
+If there is a set of $m$ \emph{linearly independent vectors} in $\mathbb{R}^n$ that spans all of $\mathbb{R}^n$, then $m=n$.
+\end{corollary}
+
+\begin{theorem}[Relation of Linear Combination and Linearly Dependence]
+Let $\{\bm{u}_1,\cdots,\bm{u}_m\}$ be a set of vectors in $\mathbb{R}^n$. The vectors in this set are \emph{linearly dependent} if one vector is a linear combination of others.
+\end{theorem}
+
+\subsection{Linear transformation}
+
+\begin{definition}[Linear Transformation]
+Function $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$ is a \emph{linear transformation} if for all $\bm{v},\bm{u}\in\mathbb{R}^{m}$ and for all $r\in\mathbb{R}$, $T(\bm{v}+\bm{u})=T\bm{v}+T\bm{u}$ and $T(r\bm{v}) = rT(\bm{v})$.
+$\mathbb{R}^m$ is the \emph{domain}, and $\mathbb{R}^n$ is the \emph{co-domain}. For $\bm{u}\in\mathbb{R}^m$, $T(\bm{u})$ is the \emph{image} of $\bm{u}$ under $T$.
+\end{definition}
+
+\begin{definition}[Subspace]
+A subset $S$ of $\mathbb{R}^n$ is a \emph{subspace} if $S$ satisfies:
+\begin{enumerate}[label=\alph*)]
+    \item $S$ contains $\bm{0}$.
+    \item if $\bm{u}$ and $\bm{v}$ are in $S$ then $\bm{u}+\bm{v}$ is also in $S$. (\emph{closure under addition})
+    \item If $r$ is a real number, and $\bm{u}\in S$ then, $r\bm{u}\in S$. (\emph{closure under multiplication})
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[One-to-one and On-to]
+ Let $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$, $T(\bm{v})=\bm{A}\bm{v}$ thus $T$ is a linear transformation. $T$ is \emph{one-to-one} (injective) if and only if $T(\bm{x})=\bm{0}$ has only the trivial solution (i.e. $\bm{x}=\bm{0}$), or equivalently, $T(\bm{a})=T(\bm{b})$ implies $\bm{a}=\bm{b}$. This means the columns of $\bm{A}$ are linearly independent. $T$ is \emph{on-to} (surjective) if and only if columns of $\bm{A}$ span $\mathbb{R}^n$.
+\end{definition}
+
+Note, $\bm{A}$ is a $n\times m$ matrix.
+If $m>n$, $T$ is \emph{not} one-to-one.
+If $m<n$, $T$ is \emph{not} on-to.\\
+
+In more general terms, if a function is one-to-one (\textbf{injective}), every element of the co-domain is mapped to by \textit{at most one} element of the domain. If a function is on-to (\textbf{surjective}) if every element of the co-domain is mapped to by at least one element of the domain. A function is \emph{one-to-one and on-to} (\textbf{bijective}) if every element of the co-domain is mapped to by exactly one element of the domain.

@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{changepage}
+\usepackage{amsmath,amsthm,amssymb, listings, color}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={black},
+    citecolor={black},
+    urlcolor={blue}
+}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{multicol}
+\def\imp{\rightarrow}
+\newcommand\XOR{\mathbin{\char`\^}}
+\newcommand\IFF{\leftrightarrow}
+\newcommand\modt{\text{ mod }}
+\newcommand{\modp}[1]{(\text{mod }$#1$)}
+\newcommand{\MOD}[2]{\text{$#1$ (mod $#2$)}}
+\newcommand{\IMP}{\Rightarrow}
+\newcommand{\argmin}{\arg\!\min}
+\newcommand{\argmax}{\arg\!\max}
+\newcommand{\bksh}{\textbackslash}
+\newcommand{\ul}[1]{\underline{#1}}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\hypersetup{
+  urlcolor=blue
+}
+
+\lstset{
+  mathescape,
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\ttfamily\small},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+\title{Linear Algebra Review}
+\author{Kaiyu Zheng}
+\date{October 2017}
+
+\begin{document}
+
+\maketitle
+
+\noindent Linear algebra is fundamental for many areas in computer science. This document aims at providing a reference (mostly for myself) when I need to remember some concepts or examples. Instead of a collection of facts as the Matrix Cookbook, this document is more gentle like a tutorial. Most of the content come from my notes while taking the undergraduate linear algebra course (Math 308) at the University of Washington. Contents on more advanced topics are collected from reading different sources on the Internet.
+
+\begin{multicols}{2}
+\setlength{\columnseprule}{0.4pt}
+  \tableofcontents
+\end{multicols}
+
+\section*{Notation}
+We denote vectors using bold lower case letters such as $\bm{x}$, matrices using bold upper case letters such as $\bm{X}$, and entries of matrices using normal upper case letters such as $X_{ij}$ or $X_{i,j}$ (The comma is used if the indices are expressed by equations).  
+
+\section{Linear System of Equations}
+\label{sec:linsys}
+\input{linsys}
+
+\section{Vectors}
+\label{sec:vectors}
+\input{vectors}
+
+\section{Matrix Algebra}
+\label{sec:malg}
+\input{malg}
+
+\section{Vector Spaces}
+\label{sec:vecspace}
+\input{vecspace}
+
+
+\section{Eigen}
+\label{sec:eigen}
+\input{eigen}
+
+
+\section{The Big Theorem}
+\label{sec:bigt}
+\input{bigt}
+
+\section{Special Matrices}
+\label{sec:special}
+\input{special}
+
+\section{Matrix Calculus}
+\label{sec:mcalc}
+\input{mcalc}
+
+
+\end{document}

@@ -1,0 +1,279 @@
+\subsection{Addition} If $\bm{A},\bm{B}\in M_{n\times m}(\mathbb{R})$ and $r\in\mathbb{R}$,
+\begin{equation}
+(\bm{A}+\bm{B})_{ij}=(\bm{A})_{ij}+(\bm{B})_{ij}
+\end{equation}
+
+\subsection{Scalar Multiplication}
+\begin{equation}
+(r\bm{A})_{ij} = r(\bm{A})_{ij}
+\end{equation}
+
+\subsection{Matrix Multiplication} 
+If $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$ is represented by $\bm{A}\in M_{n\times m}(\mathbb{R})$ and $W:\mathbb{R}^n\rightarrow\mathbb{R}^l$ is represented by $\bm{B}\in M_{l\times m}(\mathbb{R})$, then $\bm{BA}$ should be represented as $W\circ T: \mathbb{R}^m\rightarrow\mathbb{R}^l$. So $\bm{BA}\in M_{l\times m}(\mathbb{R})$.
+
+Matrix multiplication can be thought of as applying a series of linear transformation to vectors in an initial domain. For example, $\bm{BA}$ is illustrated as
+\[
+\mathbb{R}^m\xrightarrow{T}\mathbb{R}^n\xrightarrow{W}\mathbb{R}^l
+\]
+Notice that although the final transformation is $\mathbb{R}^m\rightarrow\mathbb{R}^l$ which reads ``a transformation going from $\mathbb{R}^m$ (domain of $T$) to $\mathbb{R}^l$ (codomain of $W$)'', the formal notation is ``reversed'', which is $W\circ T$.
+
+\underline{Alternative definition:}
+Let $\bm{A}\in M_{n\times p}(\mathbb{R})$ and $\bm{B}\in M_{p\times m}(\mathbb{R})$, then $\bm{A}\bm{B}\in M_{n\times m}(\mathbb{R})$. We will look at several equivalent algebraic definitions of $\bm{AB}$ from different perspectives. But first of all, let us look at two interpretations of \emph{matrix-vector multiplication} $\bm{Ax}$ where $\bm{x}\in\mathbb{R}^p$.
+
+\begin{enumerate}[label=\theenumi)]
+    \item We consider $\bm{Ax}$ from the perspective of considering \emph{row vectors} of $\bm{A}$, that is, we view $\bm{A}$ as
+            \begin{equation}
+                 \bm{A}=\begin{bmatrix}
+                 \bm{\underline{a}}_{1}\\
+                 \bm{\underline{a}}_{2}\\
+                 \vdots\\
+                 \bm{\underline{a}}_{n}
+                \end{bmatrix}
+            \end{equation}
+        where each component $\bm{\ul{a}_{i}}$ is a row vector. Then, $\bm{Ax}$ can be computed by performing dot product $\bm{\ul{a}_i}^T\bm{x}$ for $i\in\{1,\cdots,n\}$, therefore $(\bm{Ax})_{i}=\bm{\ul{a}_i}^T\bm{x}$. Specifically,
+         \begin{equation}\label{eq:malg:mvr}
+                 \bm{Ax}=\begin{bmatrix}
+                 \bm{\underline{a}}_{1}^T\bm{x}\\
+                 \bm{\underline{a}}_{2}^T\bm{x}\\
+                 \vdots\\
+                 \bm{\underline{a}}_{n}^T\bm{x}
+                \end{bmatrix}
+            \end{equation}
+    \item We can also compute $\bm{Ax}$ by considering \emph{column vectors} of $\bm{A}$, such that 
+            \begin{equation}
+                 \bm{A}=\begin{bmatrix}
+                 \bm{a}_{|1} & \bm{a}_{|2} & \cdots & \bm{a}_{|p}
+                \end{bmatrix}
+            \end{equation}
+    where each component $\bm{a}_{|i}$ is a column vector.  Then, the matrix multiplication $\bm{Ax}$ can be viewed as a linear combination of columns of $\bm{A}$ with coefficients determined by entries $x_{i}$ for $i\in\{1,\cdots,k\}$.
+        \begin{equation}
+            \begin{aligned}
+                \bm{Ax} &= x_{1}\bm{a}_{|1} + x_{2}\bm{a}_{|2} + \cdots + x_{n}\bm{a}_{|p}\\
+                          &= \sum_{i=1}^p \bm{a}_{|i}x_{i}
+            \end{aligned}
+        \end{equation}
+\end{enumerate}
+
+Now, let us look at \emph{matrix-matrix multiplication} also from two perspectives.
+
+\begin{enumerate}[label=\theenumi)]
+    \item When we consider row vectors of $\bm{A}$ and column vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as
+        \begin{equation}
+            \bm{A}\bm{B} =  \begin{bmatrix*}[l]
+            \bm{Ab}_{|1} & \bm{Ab}_{|2} & \cdots & \bm{Ab}_{|m}\\
+            \end{bmatrix*}
+        \end{equation}
+    where $\bm{B}=\begin{bmatrix*}[l]
+        \bm{b}_{|1} & \bm{b}_{|2} & \cdots & \bm{b}_{|m}\\
+        \end{bmatrix*}$. From Equation \ref{eq:malg:mvr}, we know $(\bm{Ab}_{|k})_i=\bm{\ul{a}}_i^T\bm{b}_{|k}$. Therefore, $(\bm{AB})_{ij}=\bm{\ul{a}}_i^T\bm{b}_{|j}$.
+        
+    \item When we consider column vectors of $\bm{A}$ and row vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as 
+    \begin{equation}\label{eq:mmult_2}
+        \bm{AB}=\sum_{i=1}^{p}\bm{a}_{|i}\bm{\ul{b}}_i^T
+    \end{equation}
+    where $\bm{a}_{|i}\bm{\ul{b}}_i^T$ is the \emph{outer product} with output dimension of $n\times m$.
+\end{enumerate} 
+
+
+\noindent\underline{\textit{Properties of Matrix Multiplication}}:
+\begin{enumerate}[label=\theenumi)]
+    \item $\bm{A}(\bm{BC})=(\bm{AB})\bm{C}$
+    \item $\bm{A}(\bm{B}+\bm{C})=\bm{AB} + \bm{AC}$
+    \item $(\bm{A+B})\bm{C}=\bm{AC} + \bm{BC}$
+    \item $s\bm{AB}=\bm{A}s\bm{B}$
+    \item $\bm{IA}=\bm{AI}=\bm{A}$
+\end{enumerate}
+
+\noindent\underline{\textit{Caveats}}:
+\begin{enumerate}[label=\theenumi)]
+    \item $\bm{AB}\neq(\bm{BA})$ (usually)
+    \item $\bm{AC}=\bm{AB} \not\Rightarrow \bm{C} = \bm{B}$
+\end{enumerate}
+
+\subsection{Transpose}
+If $\bm{A}\in M_{n\times m}(\mathbb{R})$, then $\bm{A}^T\in M_{m\times n}(\mathbb{R})$.\\
+
+\noindent\underline{\textit{Properties of Transpose}}:
+\begin{enumerate}[label=\theenumi)]
+    \item $(\bm{A}+\bm{B})^T = \bm{A}^T+\bm{B}^T$
+    \item $(s\bm{A})^T = s(\bm{A}^T)$
+    \item $(\bm{AC})^T = \bm{C}^T\bm{A}^T$
+\end{enumerate}
+
+\begin{theorem}
+A matrix $\bm{A}$ has the property that for all $\bm{v}, \bm{W}\in\mathbb{R}^2$, $\bm{v}\cdot\bm{w}=\bm{Av}\cdot\bm{Aw}$ if and only if $\bm{A}$ is \emph{orthogonal}, that is, $\bm{AA}^T=\bm{I}_n$, or equivalently, $\bm{A}^T=\bm{A}^{-1}$. 
+\end{theorem}
+
+\subsubsection{Conjugate Transpose}
+
+\subsection{Inverse}
+\begin{definition}[Invertibility]
+ A linear map $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$ is \emph{invertible} if it is one-to-one and on-to. 
+Two implications follows if 
+    $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$ is invertible:
+    \begin{enumerate}[label=\theenumi)]
+        \item $m=n$ (required)
+        \item $T^{-1}$ is also linear.
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[Invert of Matrix]
+An $n\times n$ matrix $\bm{A}$ is invertible if there exists a matrix $\bm{B}$ so that $\bm{BA}=\bm{I}_n$. If $\bm{A}$ is invertible, $\bm{B}$ is \emph{unique} and define $\bm{A}^{-1}=\bm{B}$.
+\end{theorem}
+$\implies \bm{BA}=\bm{AB}=\bm{I}_n$\\
+
+To compute $\bm{A}^{-1}$, form an $n\times 2n$ matrix $\begin{bmatrix*}[l]
+       \bm{A} & \bm{I}_n\end{bmatrix*}$.
+Then convert it to reduced row echelon form, which results in $\begin{bmatrix*}[l]
+       \bm{I}_n & \bm{A}^{-1}\end{bmatrix*}$.
+
+\begin{theorem}[Invertibility Implies Non-zero Determinant]
+An $n\times n$ matrix is invertible if and only if its \emph{determinant} is not zero.
+\end{theorem}
+
+\begin{theorem}[Invertibility and Positive-Definite]$\ $\vspace{-0.1in}
+\begin{center}Any \emph{positive-definite} matrix is invertible.\end{center}
+\end{theorem}
+
+\noindent\underline{\textit{Properties of Matrix Inverse}}:\\
+If $\bm{A}, \bm{B}$ are invertible $n\times n$ matrix, and $\bm{C}$, $\bm{D}$ are $n\times m$ matrix. Then:
+\begin{enumerate}[label=\alph*)]
+    \item $\bm{A}^{-1}$ is invertible. $(\bm{A}^{-1})^{-1}=\bm{A}$
+    \item $\bm{AA}^{-1}=\bm{A}^{-1}\bm{A}=\bm{I}$
+    \item \label{it:minvp2} $\bm{AB}$ is invertible. $(\bm{AB})^{-1}=\bm{B}^{-1}\bm{A}^{-1}$
+    \item \label{it:minvp3} If $\bm{AC}=\bm{AD}$, then $\bm{C}=\bm{D}$
+    \item \label{it:minvp4} If $\bm{AC}=\bm{0}$, then $\bm{C}=\bm{0}$
+    \item \label{it:minvp5} $(\bm{A}^T)^{-1}=(\bm{A}^{-1})^T$
+\end{enumerate}
+\begin{proof}
+We will prove \ref{it:minvp2} and \ref{it:minvp3}.
+\begin{enumerate}
+    \item[\ref{it:minvp2}] Show that $\bm{AB}(\bm{B}^{-1}\bm{A}^{-1})=\bm{I}_n$:
+    \begin{equation}
+        \bm{AB}(\bm{B}^{-1}\bm{A}^{-1})=\bm{I}_n=\bm{A}(\bm{B}\bm{B}^{-1})\bm{A}^{-1}=\bm{AI}_n\bm{A}^{-1}=\bm{AA}^{-1}=\bm{I}_n
+    \end{equation}
+    \item[\ref{it:minvp3}] Show that $\bm{AC}=\bm{AD}\implies\bm{C}=\bm{D}$:
+    \begin{align}
+        &\bm{AC}=\bm{AD}\\
+        &\implies \bm{A}^{-1}\bm{AC}=\bm{A}^{-1}\bm{AD}\\
+        &\implies \bm{I_nC}=\bm{I_nD}\\
+        &\implies \bm{C}=\bm{D}
+    \end{align}
+    From the above proof, we see that $\bm{A}$ being invertible is important, because otherwise $\bm{A}^{-1}$ does not exist.
+\end{enumerate}
+\end{proof}
+
+\subsection{Trace}
+\begin{definition}[Trace]
+Let $\bm{A}\in M_{n\times n}(\mathbb{R})$. The trace of $\bm{A}$ is defined as the sum of entries along the main diagonal:
+\begin{equation}
+    tr(\bm{A}) = \sum_{i=1}^n a_{ii}
+\end{equation}
+\end{definition}
+
+\noindent\underline{\textit{Properties of Trace}}:
+\begin{enumerate}[label=\alph*)]
+    \item $tr(\bm{A}+\bm{B})=tr(\bm{A})+tr(\bm{B})$
+    \item $tr(c\bm{A})=c\cdot tr(\bm{A})$
+    \item $tr(\bm{AB})=tr(\bm{BA})$
+    \item $tr(\bm{A})=tr(\bm{A}^T)$
+    \item $tr(\bm{X}^T\bm{Y})=tr(\bm{XY}^T)=tr(\bm{Y}^T\bm{X})=\sum_{ij}X_{ij}Y_{ij}$
+    \item Similarity-invariant:
+        $$tr(\bm{P}^{-1}\bm{AP})=tr(\bm{P}^{-1}(\bm{AP}))=tr((\bm{AP})\bm{P}^{-1})=tr(\bm{A}(\bm{PP}^{-1}))=tr(\bm{A})$$
+    \item $d\ tr(\bm{X})=tr(d\bm{X})$
+\end{enumerate}
+
+\noindent\underline{\textit{Trace and Eigenvalues}}:
+In Section \ref{sec:eigen}, we discuss eigenvectors and eigenvalues in more detail. For the sake of proximity, we describe the relation of trace and eigenvalues here.
+
+\begin{theorem}
+If $\bm{A}$ is an $n\times n$ matrix with real or complex entries and if $\lambda_1,\cdots,\lambda_n$ are eigenvalues of $\bm{A}$, then
+\begin{equation}
+    tr(\bm{A})=\sum_i\lambda_i
+\end{equation}
+\begin{equation}
+    tr(\bm{A}^k)=\sum_i\lambda_i^k
+\end{equation}
+\end{theorem}
+
+\subsection{Power}
+\begin{definition}[Integral Power]
+$\bm{A}^n$ is raising matrix $\bm{A}\in M_{n\times n}(\mathbb{R})$ to the power of $n$. It is defined as the multiplication of $n$ the same matrix $\bm{A}$:
+\begin{equation}
+    \bm{A}^n=\bm{AA}\cdots\bm{A}
+\end{equation}
+\end{definition}
+ The matrix to the $0$th power is defined to be the identity matrix, i.e. $\bm{A}^0=\bm{I}$. The exponentiation of a non-square matrix is not well-defined; One reason is that the $0$th power is undefined. Note that $\bm{A}^{-1}\neq 1 / \bm{A}$, as it is the matrix inverse.
+ 
+ \begin{definition}[Square Root]
+ Matrix $\bm{B}=\bm{A}^{1/2}$ if and only if $\bm{BB}=\bm{A}$.
+ \end{definition}
+ To compute the square root of an arbitrary square matrix, a method that involves Jordan Normal Form (Section \ref{sec:special:jnf}) can be used. We discuss the case when the matrix $\bm{A}$ is diagonalizable (Section \ref{sec:special:diag}), meaning there exist matrix $\bm{V}$ and diagonal matrix $\bm{D}$ such that $\bm{A}=\bm{VDV}^{-1}$. The square root of $\bm{A}$ is $\bm{R}$ such that:
+ \begin{equation}
+     \bm{R}=\bm{VSV}^{-1}
+ \end{equation}
+ where $\bm{S}$ is \emph{any} square root of $\bm{D}$. To verify,
+ \begin{equation}
+     \bm{RR}=\bm{VS}(\bm{V}^{-1}\bm{V})\bm{SV}^{-1}=\bm{VSSV}^{-1}=\bm{VDV}^{-1}=\bm{A}
+ \end{equation}
+ The square root of $\bm{D}$ is simply obtained by taking the square root of all entries along the diagonal. To raise a matrix $\bm{A}$ to an arbitrary real value $p$, we can follow
+ \begin{equation}
+     \bm{A}^p=\exp(p\ln(\bm{A}))
+ \end{equation}
+ where $\ln(\bm{A})$ is defined in Section \ref{sec:malg:exp} below. 
+ 
+ \subsection{Exponential and Logarithm}
+ \label{sec:malg:exp}
+ \begin{definition}[Exponential of Matrix]
+ The exponential of matrix $\bm{A}$ is defined as
+    \begin{equation}
+        e^{\bm{A}}=\sum_{n=0}^{\infty}\frac{\bm{A}}{n!}
+    \end{equation}
+ \end{definition}
+ This is a generalization of ordinary exponential function $e^x$ which is
+ \begin{equation}\
+ e^x = \sum_{n=0}^{\infty}\frac{x^n}{n!}
+ \end{equation}
+ \begin{definition}[Logarithm of Matrix]
+ Matrix $\bm{B}$ is the logarithm of matrix $\bm{A}$ if 
+ \begin{equation}
+     \ln(\bm{A})=\bm{B}
+ \end{equation}
+ which is equivalent as $e^{\bm{B}}=\bm{A}$.
+ \end{definition}
+ The logarithm of $\bm{A}$ does not always exist; At least, $\bm{A}$ needs to be invertible, but this is not enough. For more, please refer to \href{https://en.wikipedia.org/wiki/Logarithm_of_a_matrix}{Wikipedia}.
+ 
+ 
+\subsection{Conversion Between Matrix Notation and Summation}
+\paragraph{Outer products} Suppose $\bm{x_i}\in\mathbb{R}^d$, and $\bm{X}=[\bm{x_1},\bm{x_2},\cdots,\bm{x_n}]^T$. Then,
+\begin{align}
+    \sum_{i=1}^n\bm{x}_i\bm{x}_i^T&=\bm{X}^T\bm{X}
+\end{align}
+To understand this intuitively, note that the vertical vectors $\bm{x_i}$ are rows of $\bm{X}$. Then, recall from Equation \ref{eq:mmult_2}, matrix multiplication $\bm{AB}$ can be viewed as the sum of outer products between column vectors of $\bm{A}$ and row vectors of $\bm{B}$. Therefore, we need to transpose $\bm{X}$ and multiply it by itself, yielding $\bm{X}^T\bm{X}$.
+
+Similarly, if $\bm{y}\in\mathbb{R}^s$, and $\bm{Y}=[\bm{y}_1,\cdots,\bm{y}_n]^T$, we have:
+\begin{align}
+    \sum_{i=1}^n\bm{x}_i\bm{y}_i^T&=\bm{X}^T\bm{Y}
+\end{align}
+
+\noindent\underline{\textit{Examples}}:
+\begin{itemize}
+\item Conversion from primal objective to dual objective for \emph{kernel ridge regression}. In ridge regression, with $\bm{X}\in\mathbb{R}^{N\times d}$, $\bm{y}\in\mathbb{R}^{N}$, $\bm{x}_i\in\mathbb{R}^{d}$ features each we can formulate the objective as:
+\begin{equation}
+    \min_{\bm{w}}\frac{1}{N}\sum_{i=1}^N\Big(y_i-\bm{w}^T\bm{x}_i\Big)^2+\lambda\bm{w}^T\bm{w}
+\end{equation}
+According to the Representer Theorem, $\bm{w}^*=\sum_{i=1}^N\alpha_i\bm{x}_i$ is the optimal weights. Thus, with $\bm{\alpha}\in\mathbb{R}^N$, the above can be transformed into the following (kernel ridge regression objective), where $k(\bm{x}_i,\bm{x}_j)=\phi(\bm{x}_i)^T\phi(\bm{x}_j)$ is the kernel function:
+\begin{align}
+    &\min_{\bm{\alpha}}\frac{1}{N}\sum_{i=1}^N\Big(y_i-\sum_{j=1}^N\alpha_j\bm{x}_j^T\bm{x}_i\Big)^2 + \lambda\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_j\bm{x}_i^T\bm{x}_j\\
+    \label{eq:krr_dual}\Leftrightarrow&\min_{\bm{\alpha}}\frac{1}{N}\sum_{i=1}^N\Big(y_i-\sum_{j=1}^N\alpha_jk(\bm{x}_j, \bm{x}_i)\Big)^2 + \lambda\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jk(\bm{x}_i, \bm{x}_j)
+\end{align}
+To transform Equation \ref{eq:krr_dual} into matrix notation, first let $\bm{K}\in\mathbb{R}^{n\times n}$ be the kernel matrix where $\bm{K}_{ij}=k(\bm{x}_i,\bm{x}_j)$. Then, we have:
+\begin{align}
+    \Leftrightarrow&\min_{\bm{\alpha}}\frac{1}{N}(\bm{y}-\bm{K\alpha})^T(\bm{y}-\bm{K\alpha})+\lambda\bm{\alpha}^T\bm{K}\bm{\alpha}\\
+    \Leftrightarrow&\min_{\bm{\alpha}}\frac{1}{N}(\bm{\alpha}^T\bm{K}^T\bm{K}\bm{\alpha}-\bm{\alpha}^T\bm{K}^T\bm{y}-\bm{y}^T\bm{K\alpha}+\bm{y}^T\bm{y})+\lambda\bm{\alpha}^T\bm{K}\bm{\alpha}
+    \intertext{Because $\bm{\alpha}^T\bm{K}^T\bm{y}$ and $\bm{y}^T\bm{K\alpha}$ are just scalars, we can just write:}
+    \Leftrightarrow&\min_{\bm{\alpha}}\frac{1}{N}(\bm{\alpha}^T\bm{K}^T\bm{K}\bm{\alpha}-2\bm{\alpha}^T\bm{K}^T\bm{y}+\bm{y}^T\bm{y})+\lambda\bm{\alpha}^T\bm{K}\bm{\alpha}
+\end{align}
+The matrix notation conversion of the ridge regularization term is important.
+
+\end{itemize}

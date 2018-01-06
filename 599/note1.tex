@@ -1,0 +1,165 @@
+\RequirePackage{mmap}
+% This is the root document for my statement of purpse (or personal statement).
+% When compiling a PDF for a specific university that I'll apply for, I basically
+% change several parameters at the beginning, including UnivName, \newif\ifextra.
+%
+% The introduction for that university (the part that discusses what I know about
+% their work, and my thoughts, as well as people I'd like to work with) should be
+% placed in intro/UnivName.tex file, where UnivName is the name for that university.
+% The last words I want to say about that university (if there is any) is stored in
+% extra/UnivName.tex file.
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{
+  margin=1in,
+}
+\usepackage{amsmath,amsthm,amssymb, listings, color}
+\usepackage{mathtools}
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage[absolute]{textpos}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+%% \usepackage{setspace}
+%% \doublespacing
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0.5em}
+
+\newif\ifextra
+\extrafalse
+
+\title{}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothin
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{\fontsize{10}{12} \selectfont CSE 599: Convex Optimization and Geometry (Prof. Yin Tat Lee)\\\textbf{\emph{Introduction, Convex Set, Convex Function}} }
+\rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng\\ \today}
+
+\section{Introduction}
+
+This course is motivated by the recent progress of algorithms for optimization problems, especially combinatorial optimization. \textbf{Combinatorial optimization}, as described in Wikipedia, aims to ``find an optimal object (optimization) from a finite set of objects (combinatorial)''. Example problems in combinatorial optimization include minimum spanning tree (MST), and the travelling salesman problem (TSP). Many such problems are NP-Complete, and research has been focused on the following directions for NP-Complete problems in this field:
+\begin{itemize}
+\item Polynomial-time algorithms for special cases
+\item Algorithms that perform well on random instances
+\item Approximization algorithms that run in polynomial time and produces close-to-optimal solutions
+\item Solving real-world instances of the problem that do not necessarily exhibit worst-case behavior inherent in NP-Complete problems.
+\end{itemize}
+
+Fortunately, as the the professor Yin Tat Lee states in his first lecture notes, all convex optimization problems are in polynomial time (with some oracle assumptions). The course 599 will cover several groups of algorithms, including cutting plane methods, the first order method, and other methods for solving linear systems (e.g. Cholesky decomposition for Laplacian matrices).
+
+Because my background is not in optimization nor in theory, there are plenty of things I need to catch up in order to understand the material. These notes should help myself organize my knowledge and thoughts.
+
+\section{Linear Programming}
+
+I studied the notes written by Ferguson \cite{ferguson1958linear} and Vanderbei \cite{vanderbei2015linear} for the basics and the simplex method, etc.
+
+Linear programming is to maximize or minimize a linear function subject to a set of linear constraints. As a simple example,
+\begin{align}
+  \max_{x_1, x_2}&\qquad x_1 + x_2\\
+  \text{subject to}&\qquad x_1\geq 0, x_2\geq 0\\
+  &\qquad x_1 + 2x_2\leq 4\\
+  &\qquad 4x_1 + 2x_2\leq 12\\
+  &\qquad -x_1 + x_2 \leq 1
+\end{align}
+The solution to the above problem (i.e. an assignment of $x_1$ and $x_2$) can be found by graphing each constraint, and study how the value of $x_1+x_2$ changes when restricted to the region bounded by the constraints.
+
+There are two classes of linear programs: the \emph{standard maximum problem}, and the \emph{standard minimum problem}. Let $b=[b_1, \cdots, b_m]^T\in\mathbb{R}^{m}$, $c=[c_1,\cdots,c_n]^T\in\mathbb{R}^n$. Let $A\in\mathbb{R}^{m\times n}$ and $a_{ij}$ is the value at row $i$ and column $j$. Then, the two standard problems are:
+\paragraph{Standard Maximum Problem} Solve for $x\in\mathbb{R}^n$ in the following problem:
+\begin{align}
+  \max_{x}&\qquad c^Tx\\
+  \text{subject to}&\qquad Ax\leq b\\
+  &\qquad x\geq 0
+\end{align}
+
+\paragraph{Standard Minimum Problem} Solve for $y\in\mathbb{R}^m$ in the following problem:
+\begin{align}
+  \min_{y}&\qquad y^Tb\\
+  \text{subject to}&\qquad y^TA\geq c^T\\
+  &\qquad y\geq 0
+\end{align}
+
+The function to be maximized/minimized is the \textbf{objective function}. A vector is said to be \textbf{feasible}, if it satisfies all the constraints in the problem. In addition, for the same $b, c, A$, the standard minimum problem is referred to as the \textbf{dual problem} of the standard maximum problem (vice versa).
+
+All linear programming problems can be converted to the standard form. A minimum problem can be changed to a maximum problem by multiplying the objective function by -1.
+
+An equality constraint $\sum_{j=1}^na_{ij}x_j=b_j$ may be removed by solving the constraint for some $x_j$ for which $a_{ij}\neq 0$, and substitute this solution into the other constraints, and into the objective function. We can also convert an equality constraint to inequality by introducing two inequality constraints, such that one is a $\geq$ inequality, and the other is $\leq$ inequality (e.g. replace a constraint $Ax=b$ by two constraints $Ax\geq b$ and $Ax \leq b$).
+
+Some variables may not be restricted to be nonnegative. Such an unrestricted variable, say $x_j$, can be replaced by the difference of two nonnegative variables $x_j=u_j-v_j$, where $u_j\geq 0$ and $v_j\geq 0$, because the difference between two nonnegative values is not restrainted. This technique then adds one more variable and two nonnegative constraints to the problem.
+
+Of course, one can convert an inequality constraint to an equality constraint, by introducing \emph{slack variables}. For example, to convert
+\begin{align}
+  Ax\leq b
+\end{align}
+to an equality constraint, we can introduce slack variables $s\in\mathbb{R}^m$ and require them to be nonnegative:
+\begin{align}
+  Ax + s = b\\
+  s \geq 0
+\end{align}
+Therefore, there is no absolute difference in how the constraints are given, as long as they are linear constraints.
+
+Consider the standard maximum problem. The solution $x$ is called a \textbf{basic solution} if
+$x$ consists of $m$ \emph{basic} variables $\mathcal{B}$ and $n-m$ \emph{non-basic} variables $\mathcal{N}$, such that:
+\begin{itemize}
+\item The vectors $\{a_i\in \text{cols}(A):x_i\in\mathcal{B} \land x_i\neq 0\}$ are linearly independent (form a nonsingular basis). Namely, the columns of $A$ corresponding to variables in $\mathcal{B}$ are linearly independent. And,
+\item $\forall x_i\in\mathcal{N}, x_i=0$.
+\end{itemize}
+Variables in $\mathcal{B}$ are \emph{basic variables}. Variables in $\mathcal{N}$ are \emph{non-basic variables}. A basic solution satisfying $x>0$ is called a basic feasible solution (i.e. there is no non-basic variable in $x$).
+
+\paragraph{The Simplex Method}
+
+For a linear system of equations $y^TA=s^T$, where $s=[s_1,\cdots,s_n]^T$ are slack variables, we call $s$ to be dependent variables, and $y$ to be independent variables.
+
+The \textbf{pivoting} operation is to interchange a dependent variable $s_j$ with an independent variable $y_i$. The entry $a_{ij}$ in $A$ is the \emph{pivot}. After pivoting, we arrive at a new linear system $t^T\hat{A}=r^T$, where $t=[y_1,\cdots,s_j,\cdots,y_m]^T$, and $r=[s_1,\cdots,y_i,\cdots,s_n]^T$. The $\hat{A}$ is used to represent the matrix whose entries are affected due to the pivoting. People have derived the rules for the changes of entries in the matrix resulting in $\hat{A}$, as follows. Note that symbols without hat are the original entries in $A$.
+\begin{align}
+  \hat{a}_{ij} &= \frac{1}{a_{ij}}\\
+  \hat{a}_{hj} &= -\frac{a_{hj}}{a_{ij}}\text{ (for $h\neq i$)}\\
+  \hat{a}_{ik} &= \frac{a_{ik}}{a_{ij}}\text{  (for $k\neq j$)}\\
+  \hat{a}_{hk} &= a_{hk} - \frac{a_{ik}a_{hj}}{a_{ij}}\text{(for $h\neq i$ and $k\neq j$)}
+\end{align}
+Now that we know how pivoting works, let us see how we can solve a linear programming problem using the simplex method, which replies on performing pivoting repeatedly. Consider the standard minimization problem, which aims to minimize $y^Tb$. The \emph{main constraint} is $y^TA\geq c^T$. We can rewrite it as an equality constraint, by introducing slack variables $s$ with nonnegativity. This results in two constraints $s\geq 0$ and $s=y^TA-c^T$. We can represent this linear program with slack variables using a tableau (initial simplex tableau):
+\begin{center}
+  \begin{tabular}{ c|c|c }
+        & $s$ &\\
+    \hline
+    $y$ & $A$ & $b$\\
+    \hline
+    $1$ & $-c$ & $0$\\
+\end{tabular}
+\end{center}
+To understand why this tableau makes sense, first ignore the last column. The rest is simply a matrix representation of the constraint $s=y^TA-c^T$. The last column represents the vector whose inner product with $y$ we are trying to minimize \cite{ferguson1958linear}. The 0 at the corner indicates the fact that there is only $m$ dimension in $y^Tb$, and thus the extra dimension has entry value 0.
+
+We can expand the objective as $\sum_{i=1}^my_ib_i=y_1b_1+y_2b_2+\cdots+y_mb_m$. Now consider we pivot $y_1$ and $s_1$ around $a_{11}$ in the tableau that describes the problem. Then, we can write $y_1$ in terms of $s_1$, and the entries of $A$ will change according to the rules above resulting in $\hat{A}$. Specifically, we have
+\begin{align}
+  \sum_{i=1}^my_ib_i&=y_1b_1+y_2b_2+\cdots+y_mb_m\\
+  &=\Big(\frac{s_1}{a_{11}}-\frac{a_{21}}{a_{11}}y_2-\cdots-\frac{a_m}{a_{11}}y_m+\frac{c_1}{a_{11}}\Big)b_1+y_2b_2+\cdots+y_mb_m\\
+  \label{eq:expand}&=s_1\frac{b_1}{a_{11}}+y_2\Big(b_2-\frac{a_{21}b_1}{a_{11}}\Big)+\cdots+y_m\Big(b_m-\frac{a_{m1}b_1}{a_{11}}\Big)+\frac{c_1b_1}{a_{11}}\\
+  \label{eq:new_obj1}&=t^T\hat{b}+\hat{v}
+\end{align}
+where $t=[s_1, y_2, \cdots, y_m]^T$, and $\hat{b}$ is the vector of coefficients in Equation \ref{eq:expand}, and $\hat{v}=\frac{c_1b_1}{a_{11}}$. The above is only one pivot step. We can imagine that further pivoting will result in different $\hat{b}$ and $\hat{v}$ (therefore there is a hat to indicate changeability). We can still use $t$ and $r$ denote the vectors of variables after pivoting. Since $\hat{v}$ does not depend on $y$, to minimize Equation \ref{eq:new_obj1} is to find $y, s$ to minimize $t^T\hat{b}$, subject to constraints $y\geq 0$, $s\geq 0$, $r=t^T\hat{A}-\hat{c}$. (Remember all the changes in notation.) This problem is equivalent as the original standard problem.
+
+Now, we understand what impact the pivoting has on the problem itself (i.e. changing it to a new problem with different parameters $\hat{b}, \hat{c}, \hat{A}$). The question is, where should we choose as pivots? When should we stop pivoting? Let us answer the second question first. When we stop pivoting, we have reached a solution. It turns out that if $-\hat{c}\geq 0$ and $\hat{b}\geq 0$, the solution to the standard minimization problem is obvious, that is, $t=0$. Because the constraint $s=y^TA-c\geq 0$ (due to $-c\geq 0$) is satisfied, and the minimum of $t^Tb$ is 0 since $b\geq 0$ (thus the minimizer is $t=0$). Therefore, if we keep pivoting until $-\hat{c}\geq 0$ and $\hat{b}\geq 0$, we find a solution. The value of the original objective function $y^Tb$ is stored in $\hat{v}$ (because $t^T\hat{b}=0$ when $t$ is the minimizer).
+
+The remaining question is where should the pivots be. The order of selecting pivots is relatively mechanical. There are two rules: 
+\begin{itemize}
+\item When $b\geq 0$: Take \emph{any} column (say $j_0$) with last entry $-c_{j0}$ negative. Choose $a_{i0,j0}$ as the pivot (i.e. the $i0$-th entry of column vector $a_{j0}$) such that the value $a_{i0,j0}$ has the lowest ratio $b_{i0}/a_{i0,j0}$ among all entries in $a_{j0}$.
+\item When some $b_i< 0$: Take the first negative entry of $b$, say $b_k$ (i.e. $b_1\geq 0,\cdots,b_{k-1}\geq0$). Find any negative entry in row $k$, say $a_{k,j0}<0$. Choose $a_{i0,j0}$ as the pivot such that the ratio $b_{i0}/a_{i0,j0}$ is the smallest and that both $b_{i0}>0$ and $a_{i0,j0}>0$.
+\end{itemize}
+
+Finally, I have walked through the most basic algorithm in linear programming. There are more complex theory and algorithms that I intend to study later. As for now, I finally have some knowledge about optimization, and I should move on to study the lecture notes on convexity.
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

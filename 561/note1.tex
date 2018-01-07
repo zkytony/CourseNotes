@@ -1,0 +1,109 @@
+\RequirePackage{mmap}
+% This is the root document for my statement of purpse (or personal statement).
+% When compiling a PDF for a specific university that I'll apply for, I basically
+% change several parameters at the beginning, including UnivName, \newif\ifextra.
+%
+% The introduction for that university (the part that discusses what I know about
+% their work, and my thoughts, as well as people I'd like to work with) should be
+% placed in intro/UnivName.tex file, where UnivName is the name for that university.
+% The last words I want to say about that university (if there is any) is stored in
+% extra/UnivName.tex file.
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{
+  margin=1in,
+}
+\usepackage{amsmath,amsthm,amssymb, listings, color}
+\usepackage{mathtools}
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage[absolute]{textpos}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+%% \usepackage{setspace}
+%% \doublespacing
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0.5em}
+
+\newif\ifextra
+\extrafalse
+
+\title{}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothin
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{\fontsize{10}{12} \selectfont CSE 561: Computer Communication and Networks (Prof. Shyam Gollakota)\\\textbf{\emph{Basics of Computer Networks}} }
+\rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng\\ \today}
+
+In the first lecture, the professor started by emphasizing on the crucial role of computer networks in Internet of Things (IoT), virtual reality (VR) and augmented reality (AR). He discussed about three major limitations in the development of VR and AR technology.
+\begin{itemize}
+\item The first limitation is \textbf{offloading}. VR and AR devices and applications are computation-intensive, and they typically require offloading the computation to proximal servers (called Mobile edge/fog computing (MEC) servers) \cite{liu2017latency}. Although such offloading increases the computation capacity, it incurs extra latency into the system. In order to have comfortable experience, the VR/AR devices need to achieve less than 10ms \emph{latency}.\footnote{The latency can be thought of as the time required to compute the next frame and display that to the user.} Offloading the computation requires transmitting signals wirelessly to a remote server, which can greatly impact the performance. Magic Leap is a company that works on head-mounted virtual retinal display, which (according to the professor) uses a ``computer in pocket'' to offset the computation that needs to be offloaded.
+\item The second limitation is \textbf{power} consumption. Normal users do not have huge factories at home.
+\item The third limitation is \textbf{bandwidth}. The bandwidth consumption of good quality VR/AR video is 8GB/s due to the requirement of very high resolution. The bandwidth consumption of WiFi is 300MB/s maximum. Therefore, wireless VR/AR still has big technical challenges to be solved. More on the basic terms of networking later.
+\end{itemize}
+
+\section{Protocols and Layers}
+
+\textbf{Protocols} and \textbf{layering} is the main structuring method used to divide up network functionality. Each instance of a protocol talks virtually to its \emph{peer} using the protocol. Each instance of a protocol uses only the \emph{services} of the lower layer. Protocols are horizontal, and layers are vertical. Examples of protocols:
+\begin{itemize}
+  \item TCP, IP, 802.11 (WiFi specification), Ethernet, HTTP, SSL, DNS, etc.
+\end{itemize}
+
+At the highest level, there are four layers in computer networking (top to bottom) and some example technologies or research directions:
+\begin{itemize}
+\item \textbf{Application} (programs): Localization, game design.
+\item \textbf{Transport} (end-to-end data delivery): Data center TCP (DCTCP), multipath TCP.
+\item \textbf{Internet} (send data over network): Data center, software-defined networking (SDN).
+\item \textbf{Link} (physical layer, send bits): Backscatter, IoT.
+\end{itemize}
+
+An example protocol stack used by a web browser on a host wirelessly connected to the internet is shown in the following table.
+\begin{center}
+  \begin{tabular}{|c|l|}
+    \hline
+    \{Browser\} & \\
+    \hline
+    HTTP & (Application layer protocol)\\
+    \hline
+    TCP  & (Transport layer protocol)\\
+    \hline
+    IP   & (Internet layer protocol)\\
+    \hline
+    802.11 & (Link layer protocol)\\
+    \hline
+    \{Physical link\} &\\
+    \hline
+  \end{tabular}
+\end{center}
+
+\paragraph{Latency of transmission} What is the latency $D$ (in seconds) of transmitting an $M$-bit message from source to destination over a wire of length $L$ m at a data rate (or bit rate) of $r$ bit/s, given that the speed of light is $c$ m/s?
+\begin{align}
+  D = \frac{M}{r} + \frac{L}{c}
+\end{align}
+In this problem, latency is how long one needs to wait for the entire $M$-bit message to be received by the destination. This requires all bits to finish traveling over the wire. For a bit to travel over the wire, it takes $\frac{L}{c}$ seconds, and it takes $\frac{M}{r}$ seconds before it is the last bit's turn to be transmitted. (We assumed that when a bit is able to be transmitted, it will be transmitted. That is, there is no congestion inside the wire or some other problems.)
+
+
+\section{Network Components}
+
+How do two devices communicate?
+
+\section{Signal Processing Basics}
+
+
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

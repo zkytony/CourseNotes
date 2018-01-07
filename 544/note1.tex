@@ -1,0 +1,68 @@
+\RequirePackage{mmap}
+% This is the root document for my statement of purpse (or personal statement).
+% When compiling a PDF for a specific university that I'll apply for, I basically
+% change several parameters at the beginning, including UnivName, \newif\ifextra.
+%
+% The introduction for that university (the part that discusses what I know about
+% their work, and my thoughts, as well as people I'd like to work with) should be
+% placed in intro/UnivName.tex file, where UnivName is the name for that university.
+% The last words I want to say about that university (if there is any) is stored in
+% extra/UnivName.tex file.
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{
+  margin=1in,
+}
+\usepackage{amsmath,amsthm,amssymb, listings, color}
+\usepackage{mathtools}
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage[absolute]{textpos}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+%% \usepackage{setspace}
+%% \doublespacing
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0.5em}
+
+\newif\ifextra
+\extrafalse
+
+\title{}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothin
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{\fontsize{10}{12} \selectfont CSE 544: Principles of Data Management (Prof. Dan Suciu)\\\textbf{\emph{SQL and Relational Algebra}} }
+\rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng\\ \today}
+
+\section{Introduction}
+A database is a collection files storing \emph{related} information. ImageNet is not organized, but can be seen as a database. Typically, when we think about database as one that allows indexing, searching, and has organization.
+
+There are four fundamental components of data management. \textbf{Entities} are the objects of interest whose information is stored in the database, such as employees and job positions. \textbf{Relationships} indicate how entities relate to each other. \textbf{Operations} are used specify actions we want to perform on the data. \textbf{Functionality} describes what functions are needed (in the database system) in order to manage the data.
+
+A \textbf{data model} is an abstract mathematical concept that define the data. This course focuses on relational data model. There are other types of data models, including semistructured data model (e.g. tree-like structure as in XML and JSON), graph data model, and object-relational data model.
+
+There are certain rules that a relational database must follow. Every attribute specified in the \emph{relation schema} must be of atomic type. This requirement is called the \textbf{first normal form}. There are other normal forms that would not be covered in this course, for example, Boyce Codd normal form, and 3rd normal form. The main reason that first normal form is necessary is that a relational data model should be independent to the implementation of the database system (to ensure physical implementation independence). Nested relations (e.g. an attribute containing a list of other information or data models) in practice can be broken down into separate tables and still be modeled following the first normal form. More in later of the course.
+
+
+\section{Relational Algebra}
+
+
+
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

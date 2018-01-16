@@ -1,0 +1,86 @@
+\RequirePackage{mmap}
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{
+  margin=1in,
+}
+\usepackage{amsmath,amsthm,amssymb, listings, color}
+\usepackage{mathtools}
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage[absolute]{textpos}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontspec}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\setmainfont{Latin Modern Roman}
+%% \usepackage{setspace}
+%% \doublespacing
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0.5em}
+
+\newif\ifextra
+\extrafalse
+
+\title{}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothin
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{\fontsize{10}{12} \selectfont CSE 446: Machine Learning (Prof. Sham Kakade)\\\textbf{\emph{Perceptron, PCA, SVD}} }
+\rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng (TA)\\ \today}
+
+This is my preperation notes for teaching in sections during the winter 2018 quarter for course CSE 446. Useful for myself to review the concepts as well.
+
+\section{Perceptron}
+
+Perceptron is one of the simplest (linear) binary classifiers. Suppose we have dataset $\mathcal{D}=\{(x_i, y_i)\}_{i=1}^N$ where $x_i\in\mathbb{R}^d$ and $y_i\in\{0,1\}$. We hope to train the weights $w\in\mathbb{R}^d$ and bias $b$ in the following classification function:
+\begin{align}
+\hat{y}=f(x)=\text{sign}(w\cdot x+b>0)
+\end{align}
+To minimize a loss function
+\begin{align}
+  L(w) = \frac{1}{N}\sum_{i=1}^N\ell(y_i, \hat{y})
+\end{align}
+
+The perceptron algorithm is an iterative process. The algorithm is inherently online. In an offline setting, we can pick a threshold $\gamma$ used to terminate the algorithm, if the loss falls below $\gamma$. It is also common to have the algorithm terminate after certain number of iterations, as shown in Algorithm \ref{alg:perceptron}.
+
+
+\begin{algorithm}[h]
+    \caption{Perceptron$(\mathcal{D},T)$}
+    \label{alg:perceptron}
+
+    $w^{(0)}, b^{(0)}\gets$ random values\;
+    \ForEach{$t=1,\cdots,T$}{
+      \ForEach{$(x_i, y_i)\in \mathcal{D}$}{
+        $\hat{y}_i^{(t)}\gets f(w^{(t)}\cdot x_i)$\;
+        $w^{(t+1)}\gets w^{(t)}+(y_i-y_i^{(t)})x_i$\;
+        $b^{(t+1)}\gets b^{(t)}+(y_i-y_i^{(t)})$
+      }
+    }
+\end{algorithm}
+
+Perceptron is a linear classifier, which means the decision boundary is a linear combination of features (i.e. a hyperplane). Therefore, if the data is not linearly separable (cannot be separated by a hyperplane), then perceptron will not converge. If the data is indeed linearly separable, then perceptron is guaranteed to converge. Intuitively, the perceptron makes small adjustment in the weights to account for the classification mistake. We can transform the perceptron into a non-linear classifier by using the \textbf{kernel trick}. I will not discuss it here.
+
+\section{PCA and SVD}
+
+The goal of principal component analysis (PCA) is, as the name suggests, to represent observations $X\in\mathbb{R}^{n\times d}$ using linearly uncorrelated vectors called \textbf{principal components} and arrive at $Z\in\mathbb{R}^{n\times k}$ such that $k<d$.
+This is useful because typically we are presented with data of extremely high dimensions (millions), and not all features are useful. We hope to reduce the dimensionality of feature space, so that (1) there are fewer parameters to learn, (2) we can better understand which (uncorrelated) features are useful to represent the data, and (3) we can potentially visualize the data.
+
+
+
+
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

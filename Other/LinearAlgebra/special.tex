@@ -1,0 +1,124 @@
+\subsection{Block Matrix}
+
+\begin{definition}[Block Matrix]
+A block matrix $\bm{M}$ is defined as
+\[\bm{M}=\begin{bmatrix}
+    \bm{A} & \bm{B}\\
+    \bm{C} & \bm{D}
+\end{bmatrix}\]
+where $\bm{A}, \bm{B}, \bm{C}, \bm{D}$ are matrices (or block matrices) themselves.
+\end{definition}
+Block matrices share many useful properties as normal matrices, by treating block entries as normal matrix entries. For example:
+\begin{align}
+    \bm{M}^2 &=\begin{bmatrix}
+        \bm{A} & \bm{B}\\
+        \bm{C} & \bm{D}
+    \end{bmatrix}\begin{bmatrix}
+        \bm{A} & \bm{B}\\
+        \bm{C} & \bm{D}
+    \end{bmatrix}\\
+    &=\begin{bmatrix}
+        \bm{A}^2+\bm{BC} & \bm{AB}+\bm{BD}\\
+        \bm{CA}+\bm{DC} & \bm{CB}+\bm{D}^2
+    \end{bmatrix}
+\end{align}
+
+
+\subsection{Orthogonal}
+\begin{definition}[Orthogonal Matrix]
+An \emph{orthogonal matrix} $\bm{Q}$ is a square matrix with real entries whose columns and rows are orthogonal unit vectors (i.e., \emph{orthonormal} vectors), i.e.
+\begin{equation}\label{eq:orthogonal}
+    \bm{Q}^T\bm{Q}=\bm{Q}\bm{Q}^T=\bm{I}
+\end{equation}
+\end{definition}
+Therefore, we have $\bm{Q}^T=\bm{Q}^{-1}$. To fully understand why Equation \ref{eq:orthogonal} holds, we need to know that for two orthogonal vectors $\bm{u_1}$ and $\bm{u_2}$, $\bm{u_1}^T\bm{u_2}=0$. And $\bm{u_1}^T\bm{u_1}=|\bm{u_1}|^2=1$. Therefore, in the resulting matrix, all entries are 0 except for ones along the diagonal.
+
+\subsection{Diagonal}
+\begin{definition}[Diagonal Matrix]
+A square matrix $\bm{D}$ is a diagonal matrix if all entries except for ones along the main diagonal are 0.
+\end{definition}
+\underline{Simple fact:} for two diagonal matrices $\bm{D_1}$ and $\bm{D_2}$, their multiplication $\bm{D_1D_2}=\bm{D_3}$ is also a diagonal matrix with each entry $\bm{D_3}[i]$ along\footnote{The $[i]$ just means the $i$th entry along the main diagonal.} the main diagonal equals to $\bm{D_1}[i]\bm{D_2}[i]$.
+
+Therefore, every diagonal matrix is invertible. The inverse $\bm{D}^{-1}$ of diagonal matrix $\bm{D}$ has entries $\bm{D}^{-1}[i]=1/\bm{D}[i]$.
+
+\underline{Another fact:} The determinant of a diagonal matrix is the product of the diagonal entries.
+
+\underline{Yet another fact:} The column vectors of a diagonal matrix $\bm{D}$ are the eigenvectors of $\bm{D}$, and each diagonal entry is the eigenvalue for the eigenvector at the corresponding column, that is
+\begin{equation}
+    \bm{D}=\begin{bmatrix}
+    \lambda_1 &          \\
+              & \lambda_2\\
+              &          & \ddots\\
+              &          &         & \lambda_n
+    \end{bmatrix}
+\end{equation}
+This can be verified simply by solving the characteristic polynomial $det(\bm{D}-\lambda\bm{I})=0$.
+
+
+\subsection{Diagonalizable}\label{sec:special:diag}
+\begin{definition}[Diagonalizable Matrix]
+An $n\times n$ matrix $\bm{A}$ is \emph{diagonalizable} if there exists an $n\times n$ matrix $\bm{P}$ such that 
+\begin{equation}\label{eq:diag}
+    \bm{D}=\bm{P}^{-1}\bm{A}\bm{P}
+\end{equation}
+where $\bm{D}$ is a diagonal matrix.
+\end{definition}
+
+Note that $\bm{D}=\bm{P}^{-1}\bm{A}\bm{P}\Longrightarrow \bm{A}=\bm{P}\bm{D}\bm{P}^{-1}$
+
+\begin{theorem}[The Diagonalization Theorem] ${\ }$
+
+\begin{enumerate}[label=\alph*)]
+    \item An $n\times n$ matrix $\bm{A}$ is diagonalizable if and only if $\bm{A}$ has n linearly independent \emph{eigenvectors}.
+    \item  $\bm{A}=\bm{PDP}^{-1}$ where $\bm{D}$ is a diagonal matrix \emph{if and only if} all $n$ columns of $\bm{P}$ are linearly independent
+eigenvectors of $\bm{A}$ \emph{and} the diagonal entries of $\bm{D}$ are their corresponding eigenvalues.
+\end{enumerate}
+\end{theorem}
+If we can find $n$ linearly independent eigenvectors for an $n\times n$
+matrix $\bm{A}$, then we know the matrix is diagonalizable. Furthermore, we can use those eigenvectors and their corresponding eigenvalues to find the invertible matrix $\bm{P}$ and diagonal matrix $\bm{D}$ necessary to show that $\bm{A}$ is diagonalizable.
+
+\begin{theorem}[Power of Diagonalizable Matrix]
+If $\bm{A}=\bm{P}\bm{D}\bm{P}^{-1}$, then $\bm{A}^k=\bm{P}\bm{D}^k\bm{P}^{-1}$
+\end{theorem}
+
+\subsection{Symmetric}
+\begin{definition}[Symmetric Matrix]
+A square matrix $\bm{A}$ is symmetric if and only if
+\begin{equation}
+    \bm{A}=\bm{A}^T
+\end{equation}
+\end{definition}
+For any $n\times m$ matrix $\bm{B}$, the matrix $\bm{B}^T\bm{B}\in\mathbb{R}^{n\times n}$ is symmetric. Also, every square diagonal matrix is symmetric.
+
+\subsection{Positive-Definite}
+We omit the discussion of complex matrices for now.
+\begin{definition}[Positive-Definite]
+A \emph{symmetric} $n\times n$ real matrix $\bm{A}$ is \emph{positive definite} if for all $\bm{x}\in\mathbb{R}^n \\ \{\bm{0}\}$, 
+\begin{equation}
+    \bm{x}^T\bm{Ax} > 0
+\end{equation}
+\end{definition}
+ The negative definite, positive semi-definite, and negative semi-definite matrices are defined analogously. For ``$*$ semi-$*$'', zero is allowed (e.g. $\bm{A}$ is positive semi-definite implies $\bm{x}^T\bm{Ax}\geq 0$).
+\begin{theorem}
+Covariance matrix is positive semi-definite.
+\end{theorem}
+\noindent Given data $\bm{X}\in\mathbb{n\times d}$, its covariance matrix $\bm{\Sigma}$ is computed by the following:
+\begin{align}
+    \bm{\Sigma}&=\mathbb{E}[(\bm{X}-\mathbb{E}[\bm{X}])(\bm{X}-\mathbb{E}[\bm{X}])^T]\\
+    \intertext{For nonzero $\bm{y}\in\mathbb{R}^d$}
+    \bm{y}^T\bm{\Sigma y} &=  \bm{y}^T\mathbb{E}[(\bm{X}-\mathbb{E}[\bm{X}])(\bm{X}-\mathbb{E}[\bm{X}])^T]\bm{y}\\
+    &=  \mathbb{E}[\bm{y}^T(\bm{X}-\mathbb{E}[\bm{X}])(\bm{X}-\mathbb{E}[\bm{X}])^T\bm{y}]\\
+    &=  \mathbb{E}[\bm{Q}^T\bm{Q}]
+\end{align}
+For $\bm{Q}=(\bm{X}-\mathbb{E}[\bm{X}])^T\bm{y}$. Therefore, $\bm{y}^T\bm{\Sigma y}\geq 0$, which means $\bm{\Sigma}$ is \emph{positive semi-definite}.
+
+
+\subsection{Singular Value Decomposition}
+
+\subsection{Similar}
+
+
+
+
+\subsection{Jordan Normal Form}
+\subsection{Hermitian}

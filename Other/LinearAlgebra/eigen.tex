@@ -1,0 +1,62 @@
+\begin{definition}[Eigenvector and Eigenvalue]
+Let $\bm{A}\in M_{n\times n}(\mathbb{R})$, then a nonzero vector $\bm{u}$ is an \emph{eigenvector} of $\bm{A}$ if there exists a scalar $\lambda$ such that $\bm{Au}=\lambda\bm{u}$. The scalar $\lambda$ is called the \emph{eigenvalue}
+\end{definition}
+
+$\bm{0}$ is never an eigenvector.
+
+\begin{theorem}[Scaled Eigenvectors]
+Suppose $\bm{A}\in M_{n\times n}(\mathbb{R})$, and $\bm{u}$ is an eigenvector with eigenvalue $\lambda$. Then for any $r\neq 0$, $r\in\mathbb{R}$, $r\bm{u}$ is another eigenvector with eigenvalue $\lambda$.
+\end{theorem}
+
+It is important to note that the theorem above does not imply that all eigenvectors with eigenvalue $\lambda$ should be related by the scalar $\lambda$. With this in mind, it is more intuitive to accept the following theorem.
+
+\begin{theorem}[Eigenspace]
+If  $\bm{A}\in M_{n\times n}(\mathbb{R})$, then the set of eigenvectors with eigenvalue $\lambda$, together with $\bm{0}$ is a subspace of $\mathbb{R}^n$, called the \emph{eigenspace}.
+\end{theorem}
+
+\begin{theorem}[Condition for an Eigenvalue]
+Let  $\bm{A}\in M_{n\times n}(\mathbb{R})$. Then $\lambda$ is an eigenvalue of $\bm{A}$ if and only if 
+\begin{equation}
+det(\bm{A}-\lambda\bm{I_n})=0.    
+\end{equation}
+\end{theorem}
+
+We refer to $det(\bm{A}-\lambda\bm{I_n})=0$ as the \emph{characteristic polynomial}.
+
+\begin{definition}[Characteristic Polynomial]
+The \emph{characteristic polynomial} of an $n\times n$ matrix $\bm{A}$, $char_{\bm{A}}(\lambda)$, is the degree $n$ polynomial $det(\bm{A}-\lambda\bm{I_n})=0$.
+\end{definition}
+
+Caveat: Some linear maps do not have eigenvalues or eigenvectors, such as below:
+$$\begin{bmatrix}0 & -1\\1 & 0\end{bmatrix}$$
+
+The intuition of eigenvectors is to think of them as the axis of the corresponding linear transformation. The eigenvalue $\lambda$ helps to know if $\bm{x}$ is stretched or shrunk, when multiplied by a matrix $\bm{A}$ (i.e. $\bm{Ax}$).
+
+\subsection{Multiplicity of Eigenvalues}
+
+\begin{definition}[Algebraic Multiplicity]
+The algebraic multiplicity of an eigenvalue $\alpha$ of $\bm{A}$ is found by $k$ in $char_{\bm{A}}=(\alpha-\lambda)^kQ(\lambda)$ where $Q(\lambda)$ is a polynomial with $Q(\lambda)\neq 0$.
+\end{definition}
+
+For example, for $char_{\bm{A}}=-\lambda(\lambda-2)^2=-(\lambda-0)(\lambda-2)^2$. Therefore, $\lambda=0$ has algebraic multiplicity of 1, and $lambda=2$ has algebraic multiplicity of 2.
+
+
+\begin{definition}[Geometric Multiplicity]
+The geometric multiplicity of an eigenvalue $\lambda$ is the dimension of the eigenspace associated with $\lambda$, i.e. number of linearly independent eigenvectors of that eigenvalue.
+\end{definition}
+\begin{itemize}
+    \item 0 is eigenvalue if $\bm{A}\in M_{n\times n}(\mathbb{R})$ is \emph{singular} (See definition \ref{def:singularity}).
+    \item Geometric multiplicity $\leq$ algebraic multiplicity (of an eigenvalue).
+\end{itemize}
+
+
+\subsection{Eigendecomposition}
+\begin{definition}[Eigendecomposition of a Matrix]
+Let $\bm{A}$ be an $n\times n$ matrix, with $n$ linearly independent eigenvectors $\bm{u_i}$ for $i\in\{1,\cdots,n\}$. Then we can perform an eigendecomposition of $\bm{A}$ as follows
+\begin{equation}
+    \bm{A}=\bm{U\Lambda U}^{-1}
+\end{equation}
+where $\bm{U}$ is an $n\times n$ matrix whose $i$th column is the eigenvector $\bm{u_i}$ of $\bm{A}$, and $\bm{\Lambda}$ is the diagonal matrix whose diagonal entries are the corresponding eigenvalues (i.e. $\Lambda_{ii}=\lambda_i$).
+\end{definition}
+
+This definition implies that $\bm{A}$ must be \emph{diagonalizable} (Section \ref{sec:special:diag}). It is usually convenient to have $\bm{U}$ be a orthonormal matrix.

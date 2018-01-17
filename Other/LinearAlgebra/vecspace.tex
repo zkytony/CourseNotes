@@ -1,0 +1,184 @@
+\begin{definition}[Vector Space]
+ A \emph{vector space} $\mathcal{V}$ over a field, such as real numbers $\mathbb{R}$, is a set $\mathcal{V}$ with two functions:
+\begin{align}
+    \text{addition }+&: V \times V \rightarrow V \qquad (\text{e.g. }\bm{v}+\bm{w})\\
+    \text{scalar multiplication }\cdot&: \mathbb{R} \times V \rightarrow V \qquad (\text{e.g. }a\bm{v},\ a\in\mathbb{R})
+\end{align}
+and satisfy these properties (\emph{axioms} for all $\bm{v},\bm{w},\bm{u}\in \mathcal{V}$ and $s,t\in\mathbb{R}$:
+\begin{enumerate}[label=\theenumi)]
+    \item $\bm{u}+(\bm{v}+\bm{w})=(\bm{u}+\bm{v})+\bm{w}$ (Associativity of addition)
+    \item $\bm{u}+\bm{v}=\bm{v}+\bm{u}$ (Commutativity of addition)
+    \item There exists an element $\bm{0} \in \mathcal{V}$, called the zero vector, such that $\bm{v} + \bm{0} = \bm{v} for all \bm{v} \in \mathcal{V}$. (Identity element of addition)
+    \item $\cdots$ For more, refer to the \href{https://en.wikipedia.org/wiki/Vector_space}{\texttt{Wikipedia's article on vector space}}.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Subspace]
+ A \emph{linear  subspace} is a subset of $\mathbb{R}^n$ that is a vector space with the induced multiplication and addition from $\mathbb{R}^n$.
+\end{definition}
+For example, $\mathcal{S}\in\mathbb{R}^n$ is a vector subspace if for all $\bm{v},\bm{w}\in\mathcal{S}$, $\bm{v}+\bm{w}\in\mathcal{S}$, and for all $r\in\mathbb{R}$, $\bm{v}\in\mathcal{S}$, $r\bm{v}\in\mathcal{S}$. The latter implies $\bm{0}\in\mathcal{S}$.
+
+$\Bigg\{\begin{bmatrix*}[l]a\\b\\1\end{bmatrix*} \in \mathbb{R}^3, a,b\in\mathbb{R}$\Bigg\} is \emph{not} a subspace.
+
+\begin{definition}[Null space]
+If $\bm{A}$ is an $n\times n $ matrix, the set of solutions to the system $\bm{Ax}=\bm{0}$ is a subspace of $\mathbb{R}^n$, called the \emph{null space} of $\bm{A}$ or \emph{null($\bm{A}$)}.
+\end{definition}
+
+\begin{proof}
+Suppose $\bm{v}$, $\bm{w}$ are vectors in $\mathbb{R}^n$ that satisfy $\bm{Av}=\bm{Aw}=\bm{0}$. Then $\bm{A}(\bm{v}+\bm{w})=\bm{Av}+\bm{Aw}=\bm{0}$. And $\bm{A}(r\bm{v})=r\bm{Av}=\bm{0}$. Therefore, the set of solutions to $\bm{Ax}=\bm{0}$ is closed both under addition and multiplication.
+\end{proof}
+
+\subsection{Determinant}
+Before we formally define determinants, let us use $det(\bm{A})$ to refer to the determinant of matrix $\bm{A}$, which is a real value.
+\begin{definition}(Determinant and Minor)
+If $\bm{A}\in M_{n\times n}(\mathbb{R})$, define $\bm{M}_{ij}$ as the $n-1\times n-1$ matrix formed by deleting the \textit{i}-th row and \textit{j}-th column. $\bm{A}$. $det(\bm{M}_{ij})$ is called the \emph{minor} of entry $a_{ij}$ in $\bm{A}$.
+\end{definition}
+
+\begin{definition}[Cofactor]
+If $\bm{A}\in M_{n\times n}(\mathbb{R})$, the \emph{cofactor} of $a_{ij}$, or $C_{ij}=(-1)^{i+j}det(\bm{M}_{ij})$.
+\end{definition}
+
+\begin{definition}[Singularity]\label{def:singularity}
+A square matrix $\bm{A}$ that is invertible is called \emph{nonsingular}. Otherwise, it is called \emph{singular} or \emph{degenerate}.
+\end{definition}
+\begin{theorem}[Singularity and Determinant]
+A square matrix is \emph{singular} if and only if its determinant is 0.
+\end{theorem}
+
+Now, we formally introduce determinant of a matrix.
+
+\begin{definition}[Determinant]
+The determinant of $\bm{A}$ is an $n\times n$ matrix
+\[
+    \begin{bmatrix}
+    a_{11} & \dots & a_{1n}  \\
+    \vdots & \ddots & \vdots \\
+    a_{n1} & \dots & a_{nn}  \\
+    \end{bmatrix}
+\]
+The determinant of $\bm{A}$ is recursively defined as:
+\begin{equation}
+    det(\bm{A}) =|\bm{A}|=a_{11}C_{11} + a_{12}C_{12} + \cdots + a_{1n}C_{1n}
+\end{equation}
+And when $n=1$, $det(a_{11})=a_{11}$ (base case).
+\end{definition}
+The above definition is recursive because the definition of cofactor contains determinant.
+
+\paragraph{Geometric Meaning of Determinants}
+First, we focus on 2D. Suppose
+\[
+\bm{A}=\begin{bmatrix}
+a & b\\
+c & d
+\end{bmatrix},
+\bm{x}_1=\begin{bmatrix}
+a\\
+c
+\end{bmatrix},
+\bm{x}_2=\begin{bmatrix}
+b\\
+d
+\end{bmatrix}
+\]
+We have $det(\bm{A})=ad-bc$. This is the \emph{signed} area of the parallelogram formed by vectors $\bm{x}_1$ and $\bm{x}_2$. In the 3D case, the determinant represents the signed volume of the hexahedron formed by the three column vectors in the matrix. 
+
+\begin{theorem}[Invertibility and Determinant]
+For $\bm{A}\in M_{n\times n}(\mathbb{R})$, it is invertible if and only if $det(\bm{A}\neq 0$.
+\end{theorem}
+
+In other words, the determinant of an $n$ by $n$ matrix $\bm{A}$ is 0 if and only if the rows are linearly dependent (and not zero if and only if they are linearly independent).\\
+
+\noindent\underline{\textit{Properties of Determinants}}:
+\begin{enumerate}[label=\alph*)]
+    \item The determinant equals to the product of eigenvalues $\lambda_i$:
+        \[ det(\bm{A}) = \prod_i\lambda_i \]
+    \item $det(c\bm{A})=c^n\cdot det(\bm{A})$
+    \item $det(\bm{AB})=det(\bm{A})det(\bm{B})$
+    \item $det(\bm{A}^{-1})=\dfrac{1}{det(\bm{A})}$
+    \item $det(\bm{A}^T)=det(\bm{A})$
+    \item $det(\bm{A}^n)=det(\bm{A})^n$
+\end{enumerate}
+
+\noindent\underline{\textit{Cool Facts about Determinants}}\footnote{Source: \url{http://www.math.lsa.umich.edu/~hochster/419/det.html}}:
+\begin{enumerate}[label=\theenumi)]
+    \item Interchanging any two rows of an $n$ by $n$ matrix $\bm{A}$ reverses the sign of its determinant.
+    \item If two rows of a matrix are equal, its determinant is 0. (Because $det(\bm{A})=-det(\bm{A})$ implies $det(\bm{A})=0$.
+    \item If $\bm{A}$ is an $n$ by $n$ matrix, adding a multiple of one row to a different row does not affect its determinant.
+    \item An $n$ by $n$ matrix with a row of zeros has determinant zero.
+\end{enumerate}
+
+\subsection{Kernel}
+\begin{definition}[Kernel]
+Suppose $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$ is a linear transformation. The \emph{kernel} of $T$ is the set of vectors $\bm{x}$ such that $T(\bm{x})=\bm{0}$, denoted by $ker(T)$. In other words,
+\begin{equation}
+ker(T) = \{\bm{x}\in\mathbb{R}^m | T(\bm{x}=\bm{0})\}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Kernel and Injectivity]
+Suppose $T:\mathbb{R}^m\rightarrow\mathbb{R}^n$ is a linear transformation. Then $T$ is one-to-one if and only if $ker(T)=\{\bm{0}\}$.
+\end{theorem}
+This is rather intuitive. $T$ being one-to-one means $T(\bm{x})=\bm{0}$ has only the trivial solution which is $\bm{x}=\bm{0}$. By definition of kernel, $ker(T)=\{\bm{0}\}$.
+
+\subsection{Basis}
+\begin{definition}[Basis]
+A set $\mathcal{B}=\{\bm{u_1},\cdots,\bm{u_m}\}$ is a basis for a subspace $\mathcal{S}$ if
+\begin{enumerate}[label=\alph*)]
+    \item $\mathcal{B}$ spans $\mathcal{S}$.
+    \item $\mathcal{B}$ is linearly independent.
+\end{enumerate}
+\end{definition}
+
+\noindent To find basis for $\mathcal{S}=span\{\bm{u_1},\cdots,\bm{u_m}\}$,
+\begin{enumerate}
+    \item Use $\bm{u_1},\cdots,\bm{u_m}$ to form the rows of a matrix $\bm{A}$.
+    \item Transform $\bm{A}$ into row echelon form $\bm{B}$.
+    \item The nonzero rows give a basis for $\mathcal{S}$.
+\end{enumerate}
+
+\subsection{Dimension, Row \& Column Space, and Rank}
+\begin{definition}[Dimension]
+Let $\mathcal{S}$ be a subspace of $\mathbb{R}^n$. Then the dimension of $\mathcal{S}$, denoted as $dim(\mathcal{S})$, is the number of vectors in any basis of $\mathcal{S}$.
+\end{definition}
+
+\begin{definition}[Row Space, Column Space]
+Suppose $\bm{A}\in M_{n\times m}(\mathbb{R})$. Then:
+\begin{itemize}
+    \item $row(\bm{A})=$ span of rows of $\bm{A}$ (row space)
+    \item $col(\bm{A})=$ span of columns of $\bm{A}$ (column space)
+\end{itemize}
+$row(\bm{A})\subseteq\mathbb{R}^m$, $col(\bm{A})\subseteq\mathbb{R}^n$.
+\end{definition}
+
+\begin{theorem}[Basis for Row and Column Spaces]
+Let $\bm{A}$ be a matrix, and $\bm{B}$ be a row-echelon form of that matrix. Then
+\begin{enumerate}[label=\alph*)]
+    \item The nonzero rows of $\bm{B}$ form a basis for $row(\bm{A})$.
+    \item The columns of $\bm{A}$ corresponding to pivot columns of $\bm{B}$ form a basis for $col(\bm{A})$.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Dimension of Row and Column Spaces Are Equal]
+The following is always true for matrix $\bm{A}$:
+\begin{equation}
+    dim(col(\bm{A})) = dim(row(\bm{A}))
+\end{equation}
+\end{theorem}
+
+\begin{definition}[Rank]
+The rank of a matrix $\bm{A}$ is defined by:
+\begin{equation}
+    rank(\bm{A}) = dim(col(\bm{A})) = dim(row(\bm{A}))
+\end{equation}
+\end{definition}
+
+\begin{definition}[Nullity]
+The \emph{nullity} of $\bm{A}$ is $dim(null(\bm{A}))$.
+\end{definition}
+
+\begin{theorem}[Rank-Nullity Theorem]
+Let $\bm{A}$ be an $n\times m$ matrix. Then
+\begin{equation}
+    rank(\bm{A}) + nullity(\bm{A})=m
+\end{equation}
+\end{theorem}

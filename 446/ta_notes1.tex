@@ -217,13 +217,30 @@ Let $\bm{A}\in M_{n\times p}(\mathbb{R})$ and $\bm{B}\in M_{p\times m}(\mathbb{R
 
 \section{Bayesian Optimal Classifier}
 
-Suppose $\mathcal{D}$ is some distribution of samples $(x,y)$, where $x\in\mathbb{R}^d$ and $y\in val(Y)$ and $Y$ is a discrete random variable. This means $\mathcal{D}(x,y)$ outputs the probability of $(x,y)$ to exist in the world. A classifier $f(x)$ outputs the category (or class) $y$ given input $x$. The \textbf{Bayesian optimal classifier} is simply a classifier that has the lowest possible error when predicting values of $Y$.
-
-If we are given some $\mathcal{D}$, then we can regard $\mathcal{D}$ as our state of belief, or knowledge of the underlying distribution for $(x,y)$. This kind of scenario is Bayesian. The Bayesian optimal classifier is then,
+Suppose $\mathcal{D}$ is some distribution of samples $(x,y)$, where $x\in\mathbb{R}^d$ and $y\in val(Y)$ and $Y$ is a discrete random variable. This means $\mathcal{D}(x,y)$ outputs the probability of $(x,y)$ to exist in the world. A classifier $f(x)$ outputs the category (or class) $y$ given input $x$. The \textbf{Bayesian optimal classifier} is one defined as
 \begin{equation}
   f^*(x)=\argmax_y\mathcal{D}(x,y)
 \end{equation}
-This means the Bayesian optimal classifier is the classifier $f^*$ that produces prediction based on the most likely underlying distribution (true distribution) of $(x,y)$.
+\begin{theorem}
+  Bayesian optimal classifier achieve minimal error among all classifiers.
+\end{theorem}
+\begin{proof}
+  Assume there exists another deterministic classifier $f'$ that produces lower error than $f^*$. Then, for some input $x$, we have $f'(x)\neq f(x)$. Suppose in the real world, input $x$ can map to classes $\mathcal{Y}=\{y_1,\cdots,y_n\}$. Suppose $f'(x)=y_p\in\mathcal{Y}$. We have:
+  \begin{itemize}
+  \item Probability of $x$ to occur is $\mathcal{D}(x)=\sum_{y\in\mathcal{Y}}\mathcal{D}(x,y)$.
+  \item Probability of $(x,y_p)$ to be observed is $\mathcal{D}(x,y_p)=\mathcal{D}(x,f'(x))$.
+  \item Probability of $(x,y_q)$ where $y_q\in\mathcal{Y}\setminus\{y_p\}$ to be observed is $\mathcal{D}(x)-\mathcal{D}(x,f'(x))$. This is the probability that $f'$ made a mistake.
+  \end{itemize}
+  Similarly, the probability that $f^*$ made a mistake is $\mathcal{D}(x)-\mathcal{D}(x,f^*(x))$. By definition of Bayesian optimal classifier,
+  \begin{align}
+    \mathcal{D}(x,f^*(x))=\max_y\mathcal{D}(x,y)\geq\mathcal{D}(x,f'(x))
+  \end{align}
+  Therefore,
+  \begin{align}
+    \mathcal{D}(x)-\mathcal{D}(x,f^*(x))\leq\mathcal{D}(x)-\mathcal{D}(x,f'(x))
+  \end{align}
+  Thus, $f^*$ makes fewer mistakes. When $f'$ and $f^*$ only disagree on $x$, it is not possible for $f'(x)$ being correct while $f^*(x)$ being wrong. Therefore, $f^*$ is optimal.
+\end{proof}
 
 %% Note that we included $b$ into $w^*$ and added other dimension with value $1$ into every $x_i$. Now, suppose $w^{(t)}$ is the weights at iteration $t$. Then,
 %% \begin{align}

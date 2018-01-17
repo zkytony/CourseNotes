@@ -1,4 +1,4 @@
-TARGET = note1
+TARGET = note2
 pdf:
 	xelatex $(TARGET) && bibtex $(TARGET) && xelatex $(TARGET) && \
 	xelatex $(TARGET)

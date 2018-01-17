@@ -21,8 +21,21 @@
 %% \usepackage{setspace}
 %% \doublespacing
 
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\bm{E}}
+\newcommand{\Var}{\bm{Var}}
+\newcommand{\ul}[1]{\underline{#1}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
 \setlength{\parindent}{0.25in}
-\setlength{\parskip}{0.5em}
 
 \newif\ifextra
 \extrafalse
@@ -36,7 +49,7 @@
 \fancyhf{} % sets both header and footer to nothin
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{1pt}
-\lhead{\fontsize{10}{12} \selectfont CSE 446: Machine Learning (Prof. Sham Kakade)\\\textbf{\emph{Section 3: Perceptron, Bayesian Optimal Classifier, Basics}} }
+\lhead{\fontsize{10}{12} \selectfont CSE 446: Machine Learning (Prof. Sham Kakade)\\\textbf{\emph{Section 3: Perceptron, Probability, Bayesian Optimal Classifier}} }
 \rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng (TA)\\ \today}
 
 This is my preperation notes for teaching in sections during the winter 2018 quarter for course CSE 446. Useful for myself to review the concepts as well.
@@ -81,7 +94,7 @@ To minimize a loss function $L(w) = \frac{1}{N}\sum_{i=1}^N\ell(y_i, \hat{y})$. 
 
 Perceptron is a linear classifier, which means the decision boundary is a linear combination of features (i.e. a hyperplane). Therefore, if the data is not linearly separable (cannot be separated by a hyperplane), then perceptron will not converge. If the data is indeed linearly separable, then perceptron is guaranteed to converge.
 
-\emph{Prove that perceptron is guaranteed to converge.}\footnote{Proof learned from Sham Kakade's notes: \url{https://courses.cs.washington.edu/courses/cse546/16au/slides/notes09.pdf}.} Assume the data is linearly separable. The definition of linear separability tells us that there exists some weights $w^*$ and the decision boundary $w^*\cdot x$ separates the data with a margin $\gamma\geq 0$, i.e.,
+\emph{Prove that perceptron is guaranteed to converge.}\footnote{Proof learned from Sham Kakade's notes: \url{https://courses.cs.washington.edu/courses/cse546/16au/slides/notes09.pdf}. There is another proof [Novikoff] that shows a better upper bound for the number of mistakes, but it is not necessary for our problem.} Assume the data is linearly separable. The definition of linear separability tells us that there exists some weights $w^*$ and the decision boundary $w^*\cdot x$ separates the data with a margin $\gamma\geq 0$, i.e.,
 \begin{equation}\label{eq:gap}
   y_i(w^*\cdot x)\geq \gamma
 \end{equation}
@@ -107,7 +120,110 @@ Perceptron is indeed improving at every iteration. Suppose the total number of m
 \end{equation}
 The last inequality holds because $w^{(1)}=\bm{0}$. Therefore, there is an upper-bounded for the total number of mistakes, which means perceptron is guaranteed to converge.
 
+\section{Probability}
 
+Parts of this section reference \cite{koller2009probabilistic}.
+
+\paragraph{Event space} We define a \emph{space} $\Omega$ to be the set of all possible outcomes. An \textbf{event space} $\mathcal{S}$ is the set of measurable \textbf{events} $\alpha$ such that $\alpha\in\mathcal{S}$ and $\alpha\subseteq\Omega$ to which we are willing to assign probabilities. For example, if we roll a dice, then $\Omega=\{1,2,3,4,5,6\}$. A possible event could be $\{1\}$ (we rolled one),  $\{1,3,5\}$ (we rolled odd), etc. We say an event $\alpha$ \emph{happened} if we observed an outcome $r\in\alpha$.  The event space $\mathcal{S}$ is closed under union ($\alpha\in\mathcal{S}\land \beta\in\mathcal{S}\rightarrow\alpha\cup\beta\in\mathcal{S}$) and complementation ($\alpha\in\mathcal{S}\rightarrow\Omega-\alpha\subseteq\mathcal{S}$).
+
+\paragraph{Probability distribution} Given $(\Omega,\mathcal{S})$, a \textbf{probability distribution} $\P:\mathcal{S}\rightarrow\mathbb{R}$ is a mapping from events to real values, such that (1) for all $\alpha\in\mathcal{S}$, $\P(\alpha)\geq 0$, (2) $\P(\Omega)=1$, and (3) for $\beta\in\mathcal{S}$, $\P(\alpha\cup\beta)=\P(\alpha)+\P(\beta)-\P(\alpha\cap\beta)$.
+
+\paragraph{Random variable} A random varialbe $X:\Omega\rightarrow\mathbb{R}$ associates each outcome in $\Omega$ with a value. We use $val(X)$ to denote the set of possible values that $X$ can take. Random variables can be discrete or continuous. We primarily consider discrete ones. For simplicity, if $x, y$ are generic values for random variables $X$ and $Y$, then we write $\P(X=x,Y=y)$ as $\P(X,Y)$. For a specific value $x$, we write $\P(X=x)$ as $\P(x)$.
+
+\paragraph{Marginal distribution} The marginal distribution over random variable $X$ is $\P(X)$.
+
+\paragraph{Joint distribution} The joint distribution over random variables $X_1,\cdots X_n$ is $\P(X_1,\cdots,X_n)$ satisfying $\P(X_1)=\sum_{x_i,\cdots x_n}\P(X_1,x_2,\cdots,x_n)$. Note that 1 is arbitrarily chosen.
+
+\paragraph{Conditional probability} For random variables $X, Y$, $\P(X,Y)=\P(X)\P(Y|X)$, where $\P(Y|X)$ is the probability of $Y$ conditioned on $X$. For random variables $X_1,\cdots,X_n$, we have $\P(X_1,\cdots,X_n)=\P(X_1)(X_2|X_1)\P(X_3|X_1,X_2)\cdots\P(X_n|X_1,\cdots,X_{n-1})$.
+
+\paragraph{Independence} $X$ and $Y$ are independent if $\P(X,Y)=\P(X)\P(Y)$. $X$ and $Y$ are \emph{conditionally independent} given $Z$ if $\P(X|Y,Z)=\P(X|Z)$ or $\P(X,Y|Z)=P(X|Z)P(Y|Z)$.
+
+\paragraph{Bayes's Theorem} Because $\P(X,Y)=\P(Y)\P(X|Y)=\P(X)P(Y|X)$, we can write
+\begin{equation}
+  \P(X|Y) = \frac{\P(X)\P(Y|X)}{\P(Y)}
+\end{equation}
+where $\P(X)$ is called the prior, and $\P(X|Y)$ is called the posterior.
+
+\paragraph{Expectation} For discrete random variable $X$, the expectation of $X$ under distribution $\P$ is defined as
+\begin{equation}
+  \E_{\P}[X]=\sum_{x}x\P(x)
+\end{equation}
+We can also write it as $\E_{X}$. Note that we can show $\E[f(X)]=\sum_{x}f(x)\P(x)$. When the subscript is not present, $\E[f(X)]=\E_{X}[f(X)]$, and $\E[f(X,Y)]=\E_{X,Y}[f(X,Y)]=\sum_{x}\sum_{y}f(x,y)\P(x,y)$, where $X,Y$ means $\P(X,Y)$, the joint probabilty\footnote{See \url{http://www2.econ.osaka-u.ac.jp/~tanizaki/class/2012/econome1/05.pdf}.}.
+
+\underline{\textit{Properties of expectation:}}
+\begin{itemize}
+  \item $\E_{\P}[aX+b]=a\E_{\P}[X]+b$
+  \item $\E_{\P}[X+Y]=\E_{\P}[X]+\E_{\P}[Y]$
+  \item If $X$ and $Y$ are independent, $\E_{\P}[XY]=\E_{\P}[X]\E_{\P}[Y]$
+  \item For a constant value $c$, $\E[c]=c$.
+\end{itemize}
+
+\paragraph{Conditional expectation} We define $\E_{\P}[X|y]=\sum_{x}x\P(x|y)$ as the conditional expectation (expectation of $X$ given evidence $Y=y$).
+
+\paragraph{Variance} The variance of variable $X$ is
+\begin{equation}
+  \Var_{\P}[X]=\E_{\P}\Big[(X-\E_{\P}[X])^2\Big]=\E_{\P}[X^2]-(\E_{\P}[X])^2
+\end{equation}
+
+\underline{\textit{Properties of variance:}}
+\begin{itemize}
+  \item $\Var[aX+b]=a^2\Var[X]$
+  \item If $X$ and $Y$ are independent, then $\Var_\P[X+Y]=\Var_\P[X]+\Var_\P[Y]$
+\end{itemize}
+
+\paragraph{Covariance matrix} Suppose $X=[X_1,\cdots,X_n]$. Then we define the covariance matrix $\Sigma$ of $X$ as
+\begin{equation}
+  \Sigma=\E[(X-\E[X])(X-\E[X])^T]
+\end{equation}
+if $\mu_i=\E[X_i]$, then each entry $\Sigma_{ij}=\text{cov}(X_i, X_j)=\E[(X_i-\mu_i)(X_j-\mu_j)]=\E[X_iX_j]-\mu_i\mu_j$.
+
+Remember the definition of outer product:
+
+\begin{definition}[Outer Product]
+Let $\bm{a}$ and $\bm{b}$ be two vectors in $\bm{R}^n$. Then the outer product (or tensor product) between $\bm{a}$ and $\bm{b}$ is defined such that $(\bm{a}\bm{b}^T)_{ij}=a_ib_j$:
+    \begin{align}
+        \bm{a}\bm{b}^T&=\begin{bmatrix}
+        a_1b_1 & a_1b_2 & \cdots & a_1b_n\\
+        a_2b_1 & a_2b_2 & \cdots & a_2b_n\\
+        \vdots & \vdots & \ddots & \vdots\\
+        a_nb_1 & a_nb_2 & \cdots & a_nb_n\\
+        \end{bmatrix}
+    \end{align}
+\end{definition}
+
+\noindent If you don't remember matrix multiplication at all:
+
+\subsection{Matrix Multiplication} 
+Let $\bm{A}\in M_{n\times p}(\mathbb{R})$ and $\bm{B}\in M_{p\times m}(\mathbb{R})$, then $\bm{A}\bm{B}\in M_{n\times m}(\mathbb{R})$. Matrix multiplication $\bm{AB}$ can be interpreted in two ways.
+
+\begin{enumerate}[label=\theenumi)]
+    \item When we consider row vectors of $\bm{A}$ and column vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as
+        \begin{equation}
+            \bm{A}\bm{B} =  \begin{bmatrix*}[l]
+            \bm{Ab}_{|1} & \bm{Ab}_{|2} & \cdots & \bm{Ab}_{|m}\\
+            \end{bmatrix*}
+        \end{equation}
+    where $\bm{B}=\begin{bmatrix*}[l]
+        \bm{b}_{|1} & \bm{b}_{|2} & \cdots & \bm{b}_{|m}\\
+        \end{bmatrix*}$. We know $(\bm{Ab}_{|k})_i=\bm{\ul{a}}_i^T\bm{b}_{|k}$. Therefore, $(\bm{AB})_{ij}=\bm{\ul{a}}_i^T\bm{b}_{|j}$.
+        
+    \item When we consider column vectors of $\bm{A}$ and row vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as 
+    \begin{equation}\label{eq:mmult_2}
+        \bm{AB}=\sum_{i=1}^{p}\bm{a}_{|i}\bm{\ul{b}}_i^T
+    \end{equation}
+    where $\bm{a}_{|i}\bm{\ul{b}}_i^T$ is the \emph{outer product} with output dimension of $n\times m$.
+\end{enumerate} 
+
+
+\section{Bayesian Optimal Classifier}
+
+Suppose $\mathcal{D}$ is some distribution of samples $(x,y)$, where $x\in\mathbb{R}^d$ and $y\in val(Y)$ and $Y$ is a discrete random variable. This means $\mathcal{D}(x,y)$ outputs the probability of $(x,y)$ to exist in the world. A classifier $f(x)$ outputs the category (or class) $y$ given input $x$. The \textbf{Bayesian optimal classifier} is simply a classifier that has the lowest possible error when predicting values of $Y$.
+
+If we are given some $\mathcal{D}$, then we can regard $\mathcal{D}$ as our state of belief, or knowledge of the underlying distribution for $(x,y)$. This kind of scenario is Bayesian. The Bayesian optimal classifier is then,
+\begin{equation}
+  f^*(x)=\argmax_y\mathcal{D}(x,y)
+\end{equation}
+This means the Bayesian optimal classifier is the classifier $f^*$ that produces prediction based on the most likely underlying distribution (true distribution) of $(x,y)$.
 
 %% Note that we included $b$ into $w^*$ and added other dimension with value $1$ into every $x_i$. Now, suppose $w^{(t)}$ is the weights at iteration $t$. Then,
 %% \begin{align}

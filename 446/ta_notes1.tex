@@ -54,71 +54,72 @@
 
 This is my preperation notes for teaching in sections during the winter 2018 quarter for course CSE 446. Useful for myself to review the concepts as well.
 
-\section{Perceptron}
+\section{More Linear Algebra}
 
-Perceptron is one of the simplest (linear) binary classifiers. Suppose we observe data points $(x_i, y_i)$ for $i=1,\cdots,N$, where $x_i\in\mathbb{R}^d$ and $y_i\in\{-1,+1\}$. We hope to train the weights $w\in\mathbb{R}^d$ and bias $b$ in the following classification function:
-\begin{align}
-\hat{y}=f(x)=\text{sign}(w\cdot x+b)
-\end{align}
-To minimize a loss function $L(w) = \frac{1}{N}\sum_{i=1}^N\ell(y_i, \hat{y})$. The perceptron algorithm is an iterative process, either offline or online. See Algorithm \ref{alg:perceptron-online} and \ref{alg:perceptron-offline}.
+\begin{definition}[Dot Product]
+\emph{(Algebraic definition)} Let $\bm{a}$ and $\bm{b}$ be two vectors in $\mathbb{R}^n$. Then the dot product (or inner product) between $\bm{a}$ and $\bm{b}$ is defined as:
+    \begin{equation}
+        \bm{a}\cdot\bm{b}=\bm{a}^T\bm{b}=\sum_{i=1}^{n}a_ib_i
+    \end{equation}
+    
+\emph{(Geometric definition)}  The dot product of two Euclidean vectors $\bm{a}$ and $\bm{b}$ is defined by
+    \begin{equation}
+        \bm{a}\cdot\bm{b}=|\bm{a}||\bm{b}|cos(\theta_{\bm{a},\bm{b}})
+    \end{equation}
+    
+Also, The dot product $\bm{w}\cdot\bm{x}=b$ is a hyperplane, where $\bm{w}$ is normal to it.
+\end{definition}
 
+\begin{definition}[Projection]
+  Let $\bm{a}$ and $\bm{b}$ be two vectors in $\mathbb{R}^n$. The projection of $\bm{b}$ onto $\bm{a}$ is defined
+  \begin{equation}
+proj_{\bm{a}}\bm{b}=\frac{\bm{a}\cdot\bm{b}}{|\bm{a}|}\frac{\bm{a}}{|\bm{a}|}=\frac{\bm{a}\cdot\bm{b}}{|\bm{a}|^2}\bm{a}
+  \end{equation}
+The projection of a 2-D vector $\bm{x}$ onto a 1-D line identified by unit vector $\bm{u}$ is $(\bm{x}\cdot\bm{u})\bm{u}$. To project a $N$-D vector $\bm{x}$ down to $K$-D $\hat{\bm{x}}$, we have $\hat{\bm{x}}=\sum_{i=1}^K(\bm{x}\cdot\bm{u}_i)\bm{u}_i$.
 
-\begin{algorithm}[h]
-    \caption{Perceptron-Online(T)}
-    \label{alg:perceptron-online}
-    $w^{(1)}\gets \bm{0}$; $b^{(1)}\gets 0$\;
-    \ForEach{$t=1,\cdots,T$}{
-      $(x_t, y_t)\gets$ new observation at time $t$\;
-      $\hat{y}_t\gets f(w^{(t)}\cdot x_t)$\;
-      \If{$\hat{y}_t\neq y_t$}{
-        $w^{(t+1)}\gets w^{(t)}+y_tx_t$\;
-        $b^{(t+1)}\gets b^{(t)}+y_t$
-      }
-    }
-\end{algorithm}
+  
+\begin{definition}[Outer Product]
+Let $\bm{a}$ and $\bm{b}$ be two vectors in $\mathbb{R}^n$. Then the outer product (or tensor product) between $\bm{a}$ and $\bm{b}$ is defined such that $(\bm{a}\bm{b}^T)_{ij}=a_ib_j$:
+    \begin{align}
+        \bm{a}\bm{b}^T&=\begin{bmatrix}
+        a_1b_1 & a_1b_2 & \cdots & a_1b_n\\
+        a_2b_1 & a_2b_2 & \cdots & a_2b_n\\
+        \vdots & \vdots & \ddots & \vdots\\
+        a_nb_1 & a_nb_2 & \cdots & a_nb_n\\
+        \end{bmatrix}
+    \end{align}
+\end{definition}
+  
+\end{definition}
 
-\begin{algorithm}[h]
-    \caption{Perceptron-Offline$(\mathcal{D},T)$}
-    \label{alg:perceptron-offline}
-    $w^{(1)}\gets \bm{0}$; $b^{(1)}\gets 0$\;
-    \ForEach{$t=1,\cdots,T$}{
-      \ForEach{$(x_i, y_i)\in \mathcal{D}$}{
-        $\hat{y}_i^{(t)}\gets f(w^{(t)}\cdot x_i)$\;
-        \If{$\hat{y}_i^{(t)}\neq y_i$}{
-          $w^{(t+1)}\gets w^{(t)}+y_ix_i$\;
-          $b^{(t+1)}\gets b^{(t)}+y_i$
-        }
-      }
-    }
-\end{algorithm}
+\subsection{Matrix Multiplication} 
+Let $\bm{A}\in M_{n\times p}(\mathbb{R})$ and $\bm{B}\in M_{p\times m}(\mathbb{R})$, then $\bm{A}\bm{B}\in M_{n\times m}(\mathbb{R})$. Matrix multiplication $\bm{AB}$ can be interpreted in two ways.
 
-Perceptron is a linear classifier, which means the decision boundary is a linear combination of features (i.e. a hyperplane). Therefore, if the data is not linearly separable (cannot be separated by a hyperplane), then perceptron will not converge. If the data is indeed linearly separable, then perceptron is guaranteed to converge.
+\begin{enumerate}[label=\theenumi)]
+    \item When we consider row vectors of $\bm{A}$ and column vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as
+        \begin{equation}
+            \bm{A}\bm{B} =  \begin{bmatrix*}[l]
+            \bm{Ab}_{|1} & \bm{Ab}_{|2} & \cdots & \bm{Ab}_{|m}\\
+            \end{bmatrix*}
+        \end{equation}
+    where $\bm{B}=\begin{bmatrix*}[l]
+        \bm{b}_{|1} & \bm{b}_{|2} & \cdots & \bm{b}_{|m}\\
+        \end{bmatrix*}$. We know $(\bm{Ab}_{|k})_i=\bm{\ul{a}}_i^T\bm{b}_{|k}$. Therefore, $(\bm{AB})_{ij}=\bm{\ul{a}}_i^T\bm{b}_{|j}$.
+        
+    \item When we consider column vectors of $\bm{A}$ and row vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as 
+    \begin{equation}\label{eq:mmult_2}
+        \bm{AB}=\sum_{i=1}^{p}\bm{a}_{|i}\bm{\ul{b}}_i^T
+    \end{equation}
+    where $\bm{a}_{|i}\bm{\ul{b}}_i^T$ is the \emph{outer product} with output dimension of $n\times m$.
+\end{enumerate} 
 
-\emph{Prove that perceptron is guaranteed to converge.}\footnote{Proof learned from Sham Kakade's notes: \url{https://courses.cs.washington.edu/courses/cse546/16au/slides/notes09.pdf}. There is another proof [Novikoff] that shows a better upper bound for the number of mistakes, but it is not necessary for our problem.} Assume the data is linearly separable. The definition of linear separability tells us that there exists some weights $w^*$ and the decision boundary $w^*\cdot x$ separates the data with a margin $\gamma\geq 0$, i.e.,
-\begin{equation}\label{eq:gap}
-  y_i(w^*\cdot x)\geq \gamma
+\begin{definition}[Orthogonal Matrix]
+An \emph{orthogonal matrix} $\bm{Q}$ is a square matrix with real entries whose columns and rows are orthogonal unit vectors (i.e., \emph{orthonormal} vectors), i.e.
+\begin{equation}\label{eq:orthogonal}
+    \bm{Q}^T\bm{Q}=\bm{Q}\bm{Q}^T=\bm{I}
 \end{equation}
-Suppose we have weights $w^{(t+1)}$ at time $t+1$. We are interested to know if inequality $||w^{(t+1)}-w^*||^2\leq||w^{(t)}-w^*||^2$ holds. That is, $w^{(t+1)}$ is ``closer'' to $w^*$, the weights that can be used to separate the data. Let binary variable $m_i=1$ if there is a mistake when classifying data point $i$.
-\begin{align}
-  ||w^{(t+1)}-w^*||^2&=||w^{(t)}+m_iy_ix_i-w^*||^2\\
-  &=||w^{(t)}-w^*||^2+2m_iy_ix_i^T(w^*-w)+m_i^2y_i^2||x_i||^2\\
-  \label{eq:pf_3}&\leq ||w^{(t)}-w^*||^2+2m_iy_ix_i^T(w^{(t)}-w^*)+m_i^2\\
-  \label{eq:pf_4}&\leq ||w^{(t)}-w^*||^2-2m_i+m_i\\
-  &\leq ||w^{(t)}-w^*||^2-m_i
-\end{align}
-(\ref{eq:pf_3}) to (\ref{eq:pf_4}) is because, from (\ref{eq:gap}), we have $y_ix_i^Tw^*\geq 0$. And because $m_iy_ix_i^Tw^{(t)}\leq 0$, we have
-\begin{equation}
-  m_iy_ix_i^T(w^{(t)}-w^*)\leq m_iy_ix_i^Tw^{(t)}-m_i\leq -m_i
-\end{equation}
-Therefore,
-\begin{equation}
-  m_i\leq||w^{(t)}-w^*||^2-||w^{(t+1)}-w^*||^2
-\end{equation}
-Perceptron is indeed improving at every iteration. Suppose the total number of mistakes at iteration $T$ si $M_T=\sum_{i=1}^Tm_i$. From the above inequality, we arrive at
-\begin{equation}
-  M_T\leq||w^{(1)}-w^*||^2-||w^{(T+1)}-w^*||^2\leq ||w^*||^2
-\end{equation}
-The last inequality holds because $w^{(1)}=\bm{0}$. Therefore, there is an upper-bounded for the total number of mistakes, which means perceptron is guaranteed to converge.
+\end{definition}
+Therefore, we have $\bm{Q}^T=\bm{Q}^{-1}$. To fully understand why Equation \ref{eq:orthogonal} holds, we need to know that for two orthogonal vectors $\bm{u_1}$ and $\bm{u_2}$, $\bm{u_1}^T\bm{u_2}=0$. And $\bm{u_1}^T\bm{u_1}=|\bm{u_1}|^2=1$. Therefore, in the resulting matrix, all entries are 0 except for ones along the diagonal.
 
 \section{Probability}
 
@@ -177,43 +178,6 @@ We can also write it as $\E_{X}$. Note that we can show $\E[f(X)]=\sum_{x}f(x)\P
 \end{equation}
 if $\mu_i=\E[X_i]$, then each entry $\Sigma_{ij}=\text{cov}(X_i, X_j)=\E[(X_i-\mu_i)(X_j-\mu_j)]=\E[X_iX_j]-\mu_i\mu_j$.
 
-Remember the definition of outer product:
-
-\begin{definition}[Outer Product]
-Let $\bm{a}$ and $\bm{b}$ be two vectors in $\bm{R}^n$. Then the outer product (or tensor product) between $\bm{a}$ and $\bm{b}$ is defined such that $(\bm{a}\bm{b}^T)_{ij}=a_ib_j$:
-    \begin{align}
-        \bm{a}\bm{b}^T&=\begin{bmatrix}
-        a_1b_1 & a_1b_2 & \cdots & a_1b_n\\
-        a_2b_1 & a_2b_2 & \cdots & a_2b_n\\
-        \vdots & \vdots & \ddots & \vdots\\
-        a_nb_1 & a_nb_2 & \cdots & a_nb_n\\
-        \end{bmatrix}
-    \end{align}
-\end{definition}
-
-\noindent If you don't remember matrix multiplication at all:
-
-\subsection{Matrix Multiplication} 
-Let $\bm{A}\in M_{n\times p}(\mathbb{R})$ and $\bm{B}\in M_{p\times m}(\mathbb{R})$, then $\bm{A}\bm{B}\in M_{n\times m}(\mathbb{R})$. Matrix multiplication $\bm{AB}$ can be interpreted in two ways.
-
-\begin{enumerate}[label=\theenumi)]
-    \item When we consider row vectors of $\bm{A}$ and column vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as
-        \begin{equation}
-            \bm{A}\bm{B} =  \begin{bmatrix*}[l]
-            \bm{Ab}_{|1} & \bm{Ab}_{|2} & \cdots & \bm{Ab}_{|m}\\
-            \end{bmatrix*}
-        \end{equation}
-    where $\bm{B}=\begin{bmatrix*}[l]
-        \bm{b}_{|1} & \bm{b}_{|2} & \cdots & \bm{b}_{|m}\\
-        \end{bmatrix*}$. We know $(\bm{Ab}_{|k})_i=\bm{\ul{a}}_i^T\bm{b}_{|k}$. Therefore, $(\bm{AB})_{ij}=\bm{\ul{a}}_i^T\bm{b}_{|j}$.
-        
-    \item When we consider column vectors of $\bm{A}$ and row vectors of $\bm{B}$, the multiplication $\bm{AB}$ can be viewed as 
-    \begin{equation}\label{eq:mmult_2}
-        \bm{AB}=\sum_{i=1}^{p}\bm{a}_{|i}\bm{\ul{b}}_i^T
-    \end{equation}
-    where $\bm{a}_{|i}\bm{\ul{b}}_i^T$ is the \emph{outer product} with output dimension of $n\times m$.
-\end{enumerate} 
-
 
 \section{Bayesian Optimal Classifier}
 
@@ -241,6 +205,72 @@ Suppose $\mathcal{D}$ is some distribution of samples $(x,y)$, where $x\in\mathb
   \end{align}
   Thus, $f^*$ makes fewer mistakes. When $f'$ and $f^*$ only disagree on $x$, it is not possible for $f'(x)$ being correct while $f^*(x)$ being wrong. Therefore, $f^*$ is optimal.
 \end{proof}
+
+\section{Perceptron}
+
+Perceptron is one of the simplest (linear) binary classifiers. Suppose we observe data points $(x_i, y_i)$ for $i=1,\cdots,N$, where $x_i\in\mathbb{R}^d$ and $y_i\in\{-1,+1\}$. We hope to train the weights $w\in\mathbb{R}^d$ and bias $b$ in the following classification function:
+\begin{align}
+\hat{y}=f(x)=\text{sign}(w\cdot x+b)
+\end{align}
+To minimize a loss function $L(w) = \frac{1}{N}\sum_{i=1}^N\ell(y_i, \hat{y})$. The perceptron algorithm is an iterative process, either offline or online. See Algorithm \ref{alg:perceptron-online} and \ref{alg:perceptron-offline}.
+
+
+\begin{algorithm}[h]
+    \caption{Perceptron-Online(T)}
+    \label{alg:perceptron-online}
+    $w^{(1)}\gets \bm{0}$; $b^{(1)}\gets 0$\;
+    \ForEach{$t=1,\cdots,T$}{
+      $(x_t, y_t)\gets$ new observation at time $t$\;
+      $\hat{y}_t\gets f(w^{(t)}\cdot x_t)$\;
+      \If{$\hat{y}_t\neq y_t$}{
+        $w^{(t+1)}\gets w^{(t)}+y_tx_t$\;
+        $b^{(t+1)}\gets b^{(t)}+y_t$
+      }
+    }
+\end{algorithm}
+
+\begin{algorithm}[h]
+    \caption{Perceptron-Offline$(\mathcal{D},T)$}
+    \label{alg:perceptron-offline}
+    $w^{(1)}\gets \bm{0}$; $b^{(1)}\gets 0$\;
+    \ForEach{$t=1,\cdots,T$}{
+      \ForEach{$(x_i, y_i)\in \mathcal{D}$}{
+        $\hat{y}_i^{(t)}\gets f(w^{(t)}\cdot x_i)$\;
+        \If{$\hat{y}_i^{(t)}\neq y_i$}{
+          $w^{(t+1)}\gets w^{(t)}+y_ix_i$\;
+          $b^{(t+1)}\gets b^{(t)}+y_i$
+        }
+      }
+    }
+\end{algorithm}
+
+Perceptron is a linear classifier, which means the decision boundary is a linear combination of features (i.e. a hyperplane). Therefore, if the data is not linearly separable (cannot be separated by a hyperplane), then perceptron will not converge. If the data is indeed linearly separable, then perceptron is guaranteed to converge.
+
+\emph{Prove that perceptron is guaranteed to converge.}\footnote{Proof learned from Sham Kakade's notes: \url{https://courses.cs.washington.edu/courses/cse546/16au/slides/notes09.pdf}. There is another proof [Novikoff] that shows a better upper bound for the number of mistakes, but it is not necessary for our problem.} Assume the data is linearly separable. The definition of linear separability tells us that there exists some weights $w^*$ and the decision boundary $w^*\cdot x$ separates the data with a margin $\gamma\geq 0$, i.e.,
+\begin{equation}\label{eq:gap}
+  y_i(w^*\cdot x)\geq \gamma
+\end{equation}
+Suppose we have weights $w^{(t+1)}$ at time $t+1$. We are interested to know if inequality $||w^{(t+1)}-w^*||^2\leq||w^{(t)}-w^*||^2$ holds. That is, $w^{(t+1)}$ is ``closer'' to $w^*$, the weights that can be used to separate the data. Let binary variable $m_i=1$ if there is a mistake when classifying data point $i$.
+\begin{align}
+  ||w^{(t+1)}-w^*||^2&=||w^{(t)}+m_iy_ix_i-w^*||^2\\
+  &=||w^{(t)}-w^*||^2+2m_iy_ix_i^T(w^{(t)}-w^*)+m_i^2y_i^2||x_i||^2\\
+  \label{eq:pf_3}&\leq ||w^{(t)}-w^*||^2+2m_iy_ix_i^T(w^{(t)}-w^*)+m_i^2\\
+  \label{eq:pf_4}&\leq ||w^{(t)}-w^*||^2-2m_i+m_i\\
+  &\leq ||w^{(t)}-w^*||^2-m_i
+\end{align}
+(\ref{eq:pf_3}) to (\ref{eq:pf_4}) is because, from (\ref{eq:gap}), we have $y_ix_i^Tw^*\geq 0$. And because $m_iy_ix_i^Tw^{(t)}\leq 0$, we have
+\begin{equation}
+  m_iy_ix_i^T(w^{(t)}-w^*)\leq m_iy_ix_i^Tw^{(t)}-m_i\leq -m_i
+\end{equation}
+Therefore,
+\begin{equation}
+  m_i\leq||w^{(t)}-w^*||^2-||w^{(t+1)}-w^*||^2
+\end{equation}
+Perceptron is indeed improving at every iteration. Suppose the total number of mistakes at iteration $T$ si $M_T=\sum_{i=1}^Tm_i$. From the above inequality, we arrive at
+\begin{equation}
+  M_T\leq||w^{(1)}-w^*||^2-||w^{(T+1)}-w^*||^2\leq ||w^*||^2
+\end{equation}
+The last inequality holds because $w^{(1)}=\bm{0}$. Therefore, there is an upper-bounded for the total number of mistakes, which means perceptron is guaranteed to converge.
 
 %% Note that we included $b$ into $w^*$ and added other dimension with value $1$ into every $x_i$. Now, suppose $w^{(t)}$ is the weights at iteration $t$. Then,
 %% \begin{align}

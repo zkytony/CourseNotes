@@ -6,7 +6,7 @@
 \end{definition}
 
 \begin{definition}[Dot Product]
-\emph{(Algebraic definition)} Let $\bm{a}$ and $\bm{b}$ be two vectors in $\bm{R}^n$. Then the dot product (or inner product) between $\bm{a}$ and $\bm{b}$ is defined as:
+\emph{(Algebraic definition)} Let $\bm{a}$ and $\bm{b}$ be two vectors in $\mathbb{R}^n$. Then the dot product (or inner product) between $\bm{a}$ and $\bm{b}$ is defined as:
     \begin{equation}
         \bm{a}\cdot\bm{b}=\bm{a}^T\bm{b}=\sum_{i=1}^{n}a_ib_i
     \end{equation}
@@ -16,9 +16,17 @@
         \bm{a}\cdot\bm{b}=|\bm{a}||\bm{b}|cos(\theta_{\bm{a},\bm{b}})
     \end{equation}
 \end{definition}
+Also, The dot product $\bm{w}\cdot\bm{x}=b$ is a hyperplane, where $\bm{w}$ is normal to it.
+
+\begin{definition}[Projection]
+  Let $\bm{a}$ and $\bm{b}$ be two vectors in $\mathbb{R}^n$. The projection of $\bm{b}$ onto $\bm{a}$ is defined
+  \begin{equation}
+proj_{\bm{a}}\bm{b}=\frac{\bm{a}\cdot\bm{b}}{|\bm{a}|}\frac{\bm{a}}{|\bm{a}|}=\frac{\bm{a}\cdot\bm{b}}{|\bm{a}|^2}\bm{a}
+  \end{equation}
+\end{definition}
 
 \begin{definition}[Outer Product]
-Let $\bm{a}$ and $\bm{b}$ be two vectors in $\bm{R}^n$. Then the outer product (or tensor product) between $\bm{a}$ and $\bm{b}$ is defined such that $(\bm{a}\bm{b}^T)_{ij}=a_ib_j$:
+Let $\bm{a}$ and $\bm{b}$ be two vectors in $\mathbb{R}^n$. Then the outer product (or tensor product) between $\bm{a}$ and $\bm{b}$ is defined such that $(\bm{a}\bm{b}^T)_{ij}=a_ib_j$:
     \begin{align}
         \bm{a}\bm{b}^T&=\begin{bmatrix}
         a_1b_1 & a_1b_2 & \cdots & a_1b_n\\

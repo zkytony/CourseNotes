@@ -50,6 +50,42 @@ There are certain rules that a relational database must follow. Every attribute 
 
 \section{Relational Algebra}
 
+Relational algebra (RA) is the basic set of operations for the relational model, which enables users to specify basic retrieval requests (i.e. queries).\footnote{I self-studied relational algebra using slides of Dr. Jean-Claude Franchitti from NYU.}
+
+A \textbf{relation} is a set of tuples ($d_1, d_2,\cdots, d_n$) where each element $d_j$ is a member of $D_j$, a data domain (i.e. all the values which a data element may contain).
+
+An RA operation operates on a relation, and outputs a new relation. Therefore, all objects (input, output, etc.) in relational algebra are relations (Just like all objects in algebra are symbols for numbers).
+
+RA consists of several groups of operations:
+\begin{itemize}
+\item Unary relational operations
+  \begin{itemize}
+  \item \texttt{SELECT} $\sigma_{COND}(R)$: Returns a relation $S$ where the tuples are those in $R$ such that the condition $COND$ evaluates to true.
+  \item \texttt{PROJECT} $\pi_{LATTR}(R)$: Keeps certain columns (attributes)from relation $R$ specified by the list of attributes $LATTR$, discards the rest, and remove duplicate tuples in the resulting relation.
+    \item \texttt{RENAME} $\rho_{S(LATTR)}(R)$: changes the relation name to $S$ and the column names to those specified in $LATTR$. Either $S$ or $LATTR$ can be omitted, but not both.
+  \end{itemize}
+
+\item Operations from Set Theory
+  \begin{itemize}
+  \item Union $\cup$:
+  \item Intersection $\cap$:
+  \item Difference \char`\\:
+  \item Cartesion Product $\times$:
+  \end{itemize}
+
+\item Binary operations
+  \begin{itemize}
+  \item JOIN\footnote{JOIN has many variants}
+  \item DIVISION
+  \end{itemize}
+
+\item Additional relational operations
+  \begin{itemize}
+  \item \texttt{OUTER JOIN}, \texttt{OUTER UNION}
+  \item Aggregate functions (compute statistical summary)
+  \end{itemize}
+  
+\end{itemize}
 
 
 

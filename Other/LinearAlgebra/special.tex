@@ -81,6 +81,7 @@ matrix $\bm{A}$, then we know the matrix is diagonalizable. Furthermore, we can 
 If $\bm{A}=\bm{P}\bm{D}\bm{P}^{-1}$, then $\bm{A}^k=\bm{P}\bm{D}^k\bm{P}^{-1}$
 \end{theorem}
 
+
 \subsection{Symmetric}
 \begin{definition}[Symmetric Matrix]
 A square matrix $\bm{A}$ is symmetric if and only if
@@ -89,6 +90,17 @@ A square matrix $\bm{A}$ is symmetric if and only if
 \end{equation}
 \end{definition}
 For any $n\times m$ matrix $\bm{B}$, the matrix $\bm{B}^T\bm{B}\in\mathbb{R}^{n\times n}$ is symmetric. Also, every square diagonal matrix is symmetric.
+
+\subsection{Singular Value Decomposition}
+\begin{theorem}
+  For any given real matrix $A\in\mathbb{R}^{n\times m}$, there exists a unique set of matrices $U, S, V$ such that
+  \begin{equation}
+    A = USV^T
+  \end{equation}
+  where $U\in\mathbb{R}^{n\times n}$ and $S\in\mathbb{R}^{n\times p}$ and $V\in\mathbb{R}^{p\times p}$ $U^TU=I$ and $V^TV=I$. This is called the \emph{singular value decomposition} of $A$.
+\end{theorem}
+$U$ and $V$ are orthonormal matrices. $S$ is a diagonal matrix\footnote{More precisely, it is a rectangular diagonal matrix because $n$ may not equal to $p$. Still, $S_{ij}=0$ if $i\neq j$.}. The elements in $S$ are called \emph{singular values} of $A$. The eigenvectors of $A^TA$ are columns of $V$, and the eigenvectors of $AA^T$ are columns of $U$. The entries in $S$ are positive, and sorted in decreasing order ($S_{11}\geq S_{22}\geq\cdots$).
+
 
 \subsection{Positive-Definite}
 We omit the discussion of complex matrices for now.

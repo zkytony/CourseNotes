@@ -49,17 +49,13 @@
 \fancyhf{} % sets both header and footer to nothin
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{1pt}
-\lhead{\fontsize{10}{12} \selectfont CSE 446: Machine Learning (Prof. Sham Kakade)\\\textbf{\emph{Section 4: PCA}} }
+\lhead{\fontsize{10}{12} \selectfont CSE 446: Machine Learning (Prof. Sham Kakade)\\\textbf{\emph{Section 4: Margin of Separation, SVD}} }
 \rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng (TA)\\ \today}
 
+\section{Margin of Separation}
 
 
-\section{PCA}
-
-The goal of principal component analysis (PCA) is to represent observations $X\in\mathbb{R}^{n\times d}$ using vectors called \textbf{principal components} and arrive at $Z\in\mathbb{R}^{n\times k}$ such that $k<d$ and best preserves variance of $X$.
-This is useful because typically we are presented with data of extremely high dimensions (millions), and not all features are useful. We hope to reduce the dimensionality of feature space, so that (1) there are fewer parameters to learn, (2) we can better understand which (uncorrelated) features are useful to represent the data, and (3) we can potentially visualize the data.
-
-\paragraph{Singular Value Decomposition}
+\section{Singular Value Decomposition}
 \begin{theorem}
   For any given real matrix $A\in\mathbb{R}^{n\times m}$, there exists a unique set of matrices $U, S, V$ such that
   \begin{equation}
@@ -71,7 +67,10 @@ $U$ and $V$ are orthonormal matrices. $S$ is a diagonal matrix\footnote{More pre
 
 % The $n$-dimensional column vectors of $U$ are called \emph{left-singular vectors}, and the $p$-dimensional column vectors of $V$ are called \emph{right-singular vectors}. Singular value decomposition can be viewed as a series of transformations to 
 
+\subsection{Connection to Principal Component Analysis}
 
+The goal of principal component analysis (PCA) is to represent observations $X\in\mathbb{R}^{n\times d}$ using vectors called \textbf{principal components} and arrive at $Z\in\mathbb{R}^{n\times k}$ such that $k<d$ and best preserves variance of $X$.
+This is useful because typically we are presented with data of extremely high dimensions (millions), and not all features are useful. We hope to reduce the dimensionality of feature space, so that (1) there are fewer parameters to learn, (2) we can better understand which (uncorrelated) features are useful to represent the data, and (3) we can potentially visualize the data.
 
 \bibliography{references}
 \bibliographystyle{plain}

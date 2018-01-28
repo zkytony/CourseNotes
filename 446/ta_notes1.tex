@@ -246,11 +246,11 @@ To minimize a loss function $L(w) = \frac{1}{N}\sum_{i=1}^N\ell(y_i, \hat{y})$. 
 
 Perceptron is a linear classifier, which means the decision boundary is a linear combination of features (i.e. a hyperplane). Therefore, if the data is not linearly separable (cannot be separated by a hyperplane), then perceptron will not converge. If the data is indeed linearly separable, then perceptron is guaranteed to converge.
 
-\emph{Prove that perceptron is guaranteed to converge.}\footnote{Proof learned from Sham Kakade's notes: \url{https://courses.cs.washington.edu/courses/cse546/16au/slides/notes09.pdf}. There is another proof [Novikoff] that shows a better upper bound for the number of mistakes, but it is not necessary for our problem.} Assume the data is linearly separable. The definition of linear separability tells us that there exists some weights $w^*$ and the decision boundary $w^*\cdot x$ separates the data with a margin $\gamma\geq 0$, i.e.,
+\emph{Prove that perceptron is guaranteed to converge.}\footnote{Proof learned from Sham Kakade's notes: \url{https://courses.cs.washington.edu/courses/cse546/16au/slides/notes09.pdf}. There is another proof [Novikoff] that shows a better upper bound for the number of mistakes, but it is not necessary for our problem.} Assume the data is linearly separable and $|x|\leq 1$. The definition of linear separability tells us that there exists some weights $w^*$ and the decision boundary $w^*\cdot x$ separates the data with a margin $\gamma\geq 1$, i.e.,
 \begin{equation}\label{eq:gap}
   y_i(w^*\cdot x)\geq \gamma
 \end{equation}
-Suppose we have weights $w^{(t+1)}$ at time $t+1$. We are interested to know if inequality $||w^{(t+1)}-w^*||^2\leq||w^{(t)}-w^*||^2$ holds. That is, $w^{(t+1)}$ is ``closer'' to $w^*$, the weights that can be used to separate the data. Let binary variable $m_i=1$ if there is a mistake when classifying data point $i$.
+Suppose we have weights $w^{(t+1)}$ at time $t+1$. We are interested to know if inequality $||w^{(t+1)}-w^*||^2\leq||w^{(t)}-w^*||^2$ holds. That is, $w^{(t+1)}$ is ``closer'' to $w^*$, the weights that can be used to separate the data. Let binary variable $m_i=1$ if there is a mistake when classifying data point $i$. Assume $||x||\leq 1$.
 \begin{align}
   ||w^{(t+1)}-w^*||^2&=||w^{(t)}+m_iy_ix_i-w^*||^2\\
   &=||w^{(t)}-w^*||^2+2m_iy_ix_i^T(w^{(t)}-w^*)+m_i^2y_i^2||x_i||^2\\

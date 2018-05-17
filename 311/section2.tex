@@ -1,0 +1,149 @@
+\RequirePackage{mmap}
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{
+  margin=1in,
+}
+\usepackage{amsmath,amsthm,amssymb, listings, color}
+\usepackage{mathtools}
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage[absolute]{textpos}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+%% \usepackage{setspace}
+%% \doublespacing
+
+\newcommand\defeq{\stackrel{\mathclap{\normalfont\mbox{\scriptsize def}}}{=}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{innercustomgeneric}{\customgenericname}
+\providecommand{\customgenericname}{}
+\newcommand{\newcustomtheorem}[2]{%
+  \newenvironment{#1}[1]
+  {%
+   \renewcommand\customgenericname{#2}%
+   \renewcommand\theinnercustomgeneric{##1}%
+   \innercustomgeneric
+  }
+  {\endinnercustomgeneric}
+}
+
+\newcustomtheorem{customthm}{Theorem}
+\newcustomtheorem{customlemma}{Lemma}
+\newcustomtheorem{customdef}{Definition}
+
+\newcommand{\istart}[1]{\underline{\textit{#1}}\\}
+\newcommand{\idetail}[1]{\footnotesize\textbf{\emph{#1}}\normalsize}
+\newcommand{\mapto}{\rightarrow}
+\newcommand{\bR}{\mathbb{R}}
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0.5em}
+
+\newif\ifextra
+\extrafalse
+
+\title{}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothin
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{\fontsize{10}{12} \selectfont CSE 311: Foundation of Computation I (Prof. Paul Beame and Kevin Zatloukal)\\\textbf{Section 2 notes} }
+\rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng\\ \today}
+
+\section{Worksheet Problem 5}
+
+There are many solutions to these problems, depending on your definition of domain and predicate. We are discussing the solutions provided to the students.
+
+\paragraph{Predicate Logic} The main difference of predicate logic from propositional logic is that the former uses \textbf{predicates} and \textbf{quantifiers}. For a proposition ``Someone likes both dogs and cats'', it would be somewhat unnatural to just use propositional logic and define $p$ to be ``someone likes dogs'' and $q$ to be ``someone like cats''; because ``someone'' probably refers to the same person, but the propositions $p$ and $q$ does not reflect this relation.
+
+Instead, in predicate logic, this proposition can be represented more naturally. Let's define the \textbf{domain of discourse} as ``all people''. And let's define a predicate --- a function that maps variables to a truth value --- LikesCat($x$) as ``$x$ likes cat'' and LikesDog($x$) as ``$x$ likes dog''. The original proposition then can be expressed as $\exists x\ \text{LikesCat}(x)\land\text{LikesDog}(x)$.
+
+\begin{enumerate}[label=(\alph*)]
+\item Every user has access to an electronic mailbox.
+  \paragraph{Solution} Define the domain to be users and electronic mailboxes. (If you can't think of a word to represent everything that appeared, you can union whatever objects occurred in the statement into your domain.) Then define:
+  \begin{itemize}
+  \item User($x$) $\coloneqq$ $x$ is a user.
+  \item Mailbox($x$) $\coloneqq$ $x$ is a electronic mailbox.
+  \item Access($x$, $y$) $\coloneqq$ $x$ can access $y$.
+  \end{itemize}
+  Then we can write the statement as:
+  \begin{equation}
+    \forall x \Bigg(\text{User}(x)\mapto\Big(\exists y\ (\text{Mailbox}(y)\land\text{Access}(x,y))\Big)\Bigg)
+  \end{equation}
+  \paragraph{Note} You must not use $\land$ instead of the $\mapto$. Because doing so would mean that ``every $x$ \textbf{is} a user and they can access a mailbox''. However, this is not what the original sentence is describing; Obviously for a domain of ``users and electronic mailboxes'', such statement will always evaluate to false, since some $x$'s are mailboxes.
+
+  \qquad For some people, it is natural to just read the original sentence and understand it as ``For all $x$, if $x$ is a user, then $x$ has access to an electronic mailbox.''
+
+%% \qquad In general, we interpret statement like the original as an implication:  This is the right interpretation of ``every'' in this problem.
+
+\qquad If we change the original sentence, say ``All users and electronic mailboxes are unique and important'', and define Unique($x$) to be ``$x$ is unique'', and Important($x$) to be ``$x$ is important'', then we would just translate it to $\forall x \text{Unique}(x)\land\text{Important}(x)$. In this case, if you translate to $\forall x \text{Unique}(x)\mapto\text{Important}(x)$, it is unacceptable because here when $\text{Unique}(x)$ is false, the whole statement evaluates to true but that is not what we want (because $x$ is not unique so ``All users and electronic mailboxes are unique and important'' is a false statement).
+
+\item The system mailbox can be accessed by everyone in the group if the file system is locked.
+  \paragraph{Solution} Let the domain be people in the group. Let Access($x$,$y$) be ``$x$ has access to $y$''. Let FileSystemLocked be the proposition ``the file system is locked''. Let SystemMailbox be the \textbf{constant} (fixed assignment of a variable) that is the system mailbox.
+
+  The sentence is of the form ``$A$ if $B$'' so we know the logical form should be $B\mapto A$. ``The file system is locked'' is a constant. For ``the system mailbox can be accessed by everyone'', because the domain is ``people in the group'', so $\forall x\text{Access}(x, \text{SystemMailbox})$ suffices. Therefore we have
+  \begin{equation}
+    \text{FileSystemLocked}\mapto \forall x\text{Access}(x, \text{SystemMailbox})
+  \end{equation}
+  \paragraph{Note} Certainly the use of constants is not required, and the definition of domain can vary.
+
+\item The firewall is in a diagnostic state only if the proxy server is in a diagnostic state.
+
+  \paragraph{Solution} Let the domain be \emph{all applications}. Let Firewall($x$) be ``$x$ is the firewall''. Let ProxyServer($x$) be ``$x$ is the proxy server''. Let Diagnostic($x$) be ``$x$ is in a diagnostic state''. The solution is:
+  \begin{equation}
+    \forall x\forall y\Big((\text{Firewall}(x)\land\text{Diagnostic}(x))\mapto(\text{ProxyServer}(y)\mapto\text{Diagnostic}(y))\Big)
+  \end{equation}
+
+\paragraph{Note} The English proposition is of the form ``$A$ only if $B$'' which is equivalent to ``$A\mapto B$''. The tricky part is here. Even though it sounds like ``the firewall is in a diagnostic state'' and ``the proxy server is in a diagnostic state'' should have the same logical structure because the english sentence appear similar, their logical translations would actually differ; $A$ is expressed by a conjunction, while $B$ is expressed by an implication.
+
+\qquad The key to resolve this issue is to see that we are using \emph{quantified variables}. Whenever a variable (e.g. $x$) appears in your logical formula, it must be quantified by either $\forall$ or $\exists$. You have to incorporate the meaning of the quantifiers when working on the translation. In the above solution, if we use $\text{ProxyServer}(y)\land\text{Diagnostic}(y)$ instead, then that would mean if $x$ is a firewall in a diagnostic state, then \textbf{everything} in the domain is a proxy server and is in a diagnostic state. (Note we defined $\forall y$). This is ridiculous because you in the assumption you talk about firewalls, but suddenly in the conclusion, everything becomes proxy servers.
+
+\qquad One could ask why you cannot use $\text{Firewall}(x)\mapto\text{Diagnostic}(x)$ instead of $\text{Firewall}(x)\land\text{Diagnostic}(x)$, for the sake of ``symmetry''. The (more intuitive) reason is that the original sentence is a statement \emph{about the firewall} with some special attribute (in diagnostic state). Therefore, we need to exclude everything in the domain but ``firewall in diagnostic state'', that is $\text{Firewall}(x)\land\text{Diagnostic}(x)$. Another reason is that if we use the implication, then if $x$ is not a firewall, $\text{Firewall}(x)\mapto\text{Diagnostic}(x)$ still holds true while $\text{Firewall}(x)\land\text{Diagnostic}(x)$ becomes false. We know that in the original English proposition, we are only describing firewalls, and if the $x$ is not a firewall, we \emph{don't care} and the proposition should still definitely evaluate to true because we are \emph{not lying} (and $F\mapto T=T$).
+
+%% \qquad Generally in predicate logic, you cannot simply isolate parts of the proposition and translate each separately; The fact that we use predicates and quantified variables makes the different parts of sentence related, if the variables in those parts overlap in their \textbf{scopes}.
+
+\qquad Certainly, if one defines ``the firewall'' and ``the proxy server'' as two constants, Firewall and ProxyServer, in the domain (because of ``THE''), one can avoid the quantifier puzzle and say
+\begin{equation}
+  (\text{Firewall} \land \text{Diagnostic}(\text{Firewall}))\mapto (\text{ProxyServer}\land\text{Diagnostic}(\text{ProxyServer}))
+\end{equation}
+This is OK, because the English sentence implies that there is ONLY ONE firewall and ONLY ONE proxy server (due to ``THE'').
+
+\qquad You can go to more extreme and not only recognize the firewall and the proxy server as constants, but also define propositions about them being in diagnostic state, say let FirewallDiagnostic be ``the firewall is in diagnostic state'' and let ProxyServerDiagnostic be ``the proxy server is in diagnostic state''. Then the translation becomes
+\begin{equation}
+  \text{FirewallDiagnostic} \mapto \text{ProxyServerDiagnostic}
+\end{equation}
+
+We would probably give you the domain and predicates when we want you to do such problem in homework or exam.
+
+\newpage
+\item At least one router is functioning normally if the throughput is between 100kbps and 500kbps and the proxy server is not in diagnostic state.
+
+  \paragraph{Solution} Let the domain be all applications and routers. Let Router($x$) be ``$x$ is a router'', and let ProxyServer($x$) be ``$x$ is the proxy server''. Let Diagnostic($x$) be ``$x$ is in a diagnostic state''. Let ThroughputNormal be ``the throughput is between 100kbps and 500kbps''. Let Functioning($y$) be ``$y$ is functioning nromally''. The solution is:
+  \begin{equation}
+   \forall x\Big(\text{ThroughputNormal}\land(\lnot\text{ProxyServer}(x)\lor\lnot\text{Diagnostic}(x))\Big)\mapto\Big(\exists y\text{Router}(y)\land\text{Functioning}(y)\Big)
+  \end{equation}
+or
+  \begin{equation}
+   \forall x\Big(\text{ThroughputNormal}\land(\text{ProxyServer}(x)\mapto\lnot\text{Diagnostic}(x))\Big)\mapto\Big(\exists y\text{Router}(y)\land\text{Functioning}(y)\Big)
+  \end{equation}
+
+  \paragraph{Note} (From Paul) The part that may be prone to error is ``the proxy server is not in diagnostic mode''.  This implies that there is precisely 1 processor that is a proxy server (because of ``THE''). That is ProxyServer($x$) is true exactly if $x$ is that one processor. The statement is then the same as ``every proxy server is not in diagnostic mode'' (since there is only one proxy server anyways), for which the correct translation is: $\forall x (\text{ProxyServer}(x)\mapto \lnot\text{Diagnostic}(x))$ or $\forall x (\lnot\text{ProxyServer}(x)\lor\lnot\text{Diagnostic}(x))$.
+
+\end{enumerate}
+
+\end{document}
+
+

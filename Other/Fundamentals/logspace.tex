@@ -1,0 +1,107 @@
+\RequirePackage{mmap}
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{
+  margin=1in,
+}
+\usepackage{amsmath,amsthm,amssymb, listings, color, bm}
+\usepackage{mathtools}
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+\usepackage[absolute]{textpos}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontspec}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\setmainfont{Latin Modern Roman}
+%% \usepackage{setspace}
+%% \doublespacing
+
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\bm{E}}
+\newcommand{\Var}{\bm{Var}}
+\newcommand{\ul}[1]{\underline{#1}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\newcommand{\myroot}[2]{\sqrt[\leftroot{-2}\uproot{2}#1]{#2}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\istart}[1]{\underline{\textit{#1}}\\}
+\newcommand{\idetail}[1]{\footnotesize\textbf{\emph{#1}}\normalsize}
+\newcommand{\mapto}{\rightarrow}
+\newcommand{\bR}{\mathbb{R}}
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0.5em}
+
+\newif\ifextra
+\extrafalse
+
+\title{}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothin
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{\fontsize{10}{12} \selectfont \textbf{Log space} }
+\rhead{\fontsize{10}{12} \selectfont Kaiyu Zheng\\ \today}
+
+\section{Log Function}
+
+\begin{definition}[Logarithm]
+  Suppose $b,x,y\in\mathbb{R}$, and $b^y=x$. Then, $y$ is the logarithm of $x$ to base $b$,
+  or written as $y=\log_bx$.
+\end{definition}
+
+\subsection{Properties}
+\begin{enumerate}
+\item \textbf{Product:} $\log_b(xy)=\log_bx + \log_by$
+\item \textbf{Quotient:} $\log_b\frac{x}{y}=\log_bx - \log_by$
+\item \textbf{Power:} $\log_b(x^p)=p\log_bx$
+\item \textbf{Root:} $\log_b(\myroot{p}{x})=\log_b{x^{1/p}}=\frac{\log_bx}{p}$
+\item \textbf{Change of base:} $\log_bx=\frac{\log_kx}{\log_kb}$
+\end{enumerate}
+
+\subsection{Normalization}
+Suppose we have $x_1,x_2,\cdots,x_k\in\mathbb{R}$, and we know $x_j=\log(y_j)$ for some $y_j\in\mathbb{R}$ with $y_j\in[0,1]$. (Say $\log$ is the natural logarithm, so $y_j=e^{x_j}$) We would like to normalize $x_1,x_2,\cdots,x_k\in\mathbb{R}$, so that $\sum_{i=1}^ky_i=1$.
+
+We typically will encounter $x_i$ in the negative hundreds or even thousands. The corresponding $e^{x_i}$ will be extremely small, and tends to overflow. The right way to handle this overflow is not by throwing away small values and only keep the maximum $x_i$, because there could be several values close to the maximum and we cannot ignore all of them but one. The right way to mitigate the overflow is to divide and multiply by $e^{x_{max}}$ where $x_{max}=\max_ix_i$, as shown below. Say $\tilde{x}_j$ is the normalized value for $x_j$.
+
+\begin{align}
+  \tilde{x_j} &= \log\Big(\frac{e^{x_j}}{\sum_{i=1}^ke^{x_i}}\Big)\\
+  &= \log(e^{x_j})-\log\Big(\sum_{i=1}^ke^{x_i}\Big)\\
+  &= x_j-\log\Big(\sum_{i=1}^k\frac{e^{x_i}}{e^{x_{max}}}e^{x_{max}}\Big)\\
+  &= x_j-\Bigg(\log\Big(\sum_{i=1}^ke^{x_i-x_{max}}\Big)+x_{max}\Bigg)
+\end{align}
+
+This does not prevent overflow. It makes it less likely because $x_i-x_{max} \geq x_i$ since $x_{max}\leq 0$.
+
+\subsection{Relaxation}
+
+Given $x_1,\cdots,x_k$ as before, if we want to add a value $r$ (not in the log space) to every $y_i$ then normalize the $y_i$ and eventually have a normalized vector of log likelihoods, what should we do?
+
+\begin{align}
+  \tilde{x}_j&=\log\Big(\frac{e^{x_j}+r}{\sum_{i=1}^k(e^{x_i}+r)}\Big)\\
+  &=\log(e^{x_j}+r)-\log\Big({\sum_{i=1}^k(e^{x_i}+r)}\Big)\\
+  &=\log(e^{x_j}+r)-\log\Big({\sum_{i=1}^k\frac{(e^{x_i}+r)}{e^{x_{max}}}{e^{x_{max}}}}\Big)\\
+&=\log(e^{x_j}+r)-\Bigg(\log\Big({\sum_{i=1}^k\Big(e^{x_i-x_{max}}+\frac{r}{e^{x_{max}}}\Big)}\Big)+x_{max}\Bigg)
+\end{align}
+
+
+\end{document}
+
+

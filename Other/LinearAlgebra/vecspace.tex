@@ -128,6 +128,7 @@ A set $\mathcal{B}=\{\bm{u_1},\cdots,\bm{u_m}\}$ is a basis for a subspace $\mat
     \item $\mathcal{B}$ is linearly independent.
 \end{enumerate}
 \end{definition}
+\noindent For example, $\mathcal{S}=\Big\{\begin{bmatrix}1\\0\end{bmatrix},\begin{bmatrix}0\\1\end{bmatrix}\Big\}$ is the standard basis in the $\mathbb{R}^2$.
 
 \noindent To find basis for $\mathcal{S}=span\{\bm{u_1},\cdots,\bm{u_m}\}$,
 \begin{enumerate}
@@ -135,6 +136,38 @@ A set $\mathcal{B}=\{\bm{u_1},\cdots,\bm{u_m}\}$ is a basis for a subspace $\mat
     \item Transform $\bm{A}$ into row echelon form $\bm{B}$.
     \item The nonzero rows give a basis for $\mathcal{S}$.
 \end{enumerate}
+
+\subsection{Change of Basis}
+
+\begin{definition}[Change of Basis]
+  \noindent Suppose subspaces $\mathcal{S}_1,\mathcal{S}_2\subset\mathbb{R}^n$ each have a basis $\mathcal{B}_1=\{\bm{u_1},\cdots,\bm{u_m}\}$ and $\mathcal{B}_2=\{\bm{v_1},\cdots,\bm{v_m}\}$, respectively. Let $\bm{A}=\Big[[\bm{a_1}]_{\mathcal{B}_1}\cdots[\bm{a_n}]_{\mathcal{B}_1}\Big]$ be a matrix with column vectors relative to the basis $\mathcal{B}_1$\footnote{Note that usually we omit the subscript when denoting vectors since by default the basis is the standard basis $\mathcal{S}$.}. Then, to represent column vectors in $\bm{A}$ with $\mathcal{B}_2$, we apply a \emph{change-of-basis} matrix $\bm{P}_{\mathcal{B}_1\rightarrow\mathcal{B}_2}$ from $\mathcal{B}_1$ to $\mathcal{B}_2$, such that 
+  \begin{align}
+    [\bm{a_i}]_{\mathcal{B}_2}=\bm{P}_{\mathcal{B}_1\rightarrow\mathcal{B}_2}[\bm{a_i}]_{\mathcal{B}_1}
+  \end{align}
+\end{definition}
+
+To find the change-of-basis matrix from $\mathcal{B}_1$ to $\mathcal{B}_2$, notice first that the definition of the (ordered) bases $\mathcal{B}_1=\{\bm{u_1},\cdots,\bm{u_m}\}$ and $\mathcal{B}_2=\{\bm{v_1},\cdots,\bm{v_m}\}$ involve vectors relative to the standard basis. For example, if $\mathcal{B}_1=\Big\{\begin{bmatrix}3\\1\end{bmatrix},\begin{bmatrix}-1\\2\end{bmatrix}\Big\}$, the coordinates of the basis vectors are relative to the the $\mathbb{R}^2$ space, even though they are the ``unit basis vectors'' relative to the subspace spanned by $\mathcal{B}_1$. That is, $[\bm{u_1}]_{\mathcal{S}}=\begin{bmatrix}1\\0\end{bmatrix}_{\mathcal{B}_1}$. Therefore, we can obtain the change-of-basis matrix from $\mathcal{B}_1$ to $\mathcal{S}$ effortlessly, given by
+  \begin{align}
+    \bm{P}_{\mathcal{B}_1\rightarrow\mathcal{S}}=
+    \begin{bmatrix}
+      \bm{u_1}& \cdots& \bm{u_n}
+    \end{bmatrix}
+  \end{align}
+  Because $\bm{u_i}=\bm{P}_{\mathcal{B}_1\rightarrow\mathcal{S}}[\bm{e_i}]_{\mathcal{B}_1}$. The same goes for $\mathcal{B}_2$. Therefore, we can easily obtain $\bm{P}_{\mathcal{B}_1\rightarrow\mathcal{S}}$ and $\bm{P}_{\mathcal{B}_2\rightarrow\mathcal{S}}$. Thus, to change the basis from $\mathcal{B}_1$ to $\mathcal{B}_2$, we can first change to the standard basis, then change to $\mathcal{B}_2$, summarized by:
+  \begin{align}
+    \bm{P}_{\mathcal{B}_1\rightarrow\mathcal{B}_2}&=\bm{P}_{\mathcal{S}\rightarrow\mathcal{B}_2}\bm{P}_{\mathcal{B}_1\rightarrow\mathcal{S}}\\
+   &= [\bm{P}_{\mathcal{B}_2\rightarrow\mathcal{S}}]^{-1}\bm{P}_{\mathcal{B}_1\rightarrow\mathcal{S}}
+  \end{align}
+
+%% To find the change-of-basis matrix $\bm{P}$, we express every basis vector in $\mathcal{B}_1$ as a linear combination of basis vectors in $\mathcal{B}_2$. Namely,
+%% \begin{align}
+%%   \bm{u_1}&=p_{11}\bm{v}_1+\cdot+p_{n1}\bm{v}_n=\sum_{k=1}^n\bm{v_k}\bm{p_{|k}}^T\\
+%%   &\vdots\\
+%%   \bm{u_n}&=p_{1n}\bm{v}_1+\cdot+p_{nn}\bm{v}_n
+%% \end{align}
+%% Every equation involves $n$ unknowns ($p_{1i}\cdots p_{ni}$) and $n$ equations (since every vector is $n$-dimenstional). We can solve all of them to obtain all the coefficients, which form matrix $P$. Notice the coefficients found by solving each equation are the column vectors $\bm{p_k}$ of $P$ (as indicated by the indices).
+
+%% See an example at \url{https://www.math.hmc.edu/calculus/tutorials/changebasis/}.
 
 \subsection{Dimension, Row \& Column Space, and Rank}
 \begin{definition}[Dimension]

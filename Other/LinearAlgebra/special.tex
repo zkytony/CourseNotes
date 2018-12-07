@@ -132,31 +132,90 @@ For $\bm{Q}=(\bm{X}-\mathbb{E}[\bm{X}])^T\bm{y}$. Therefore, $\bm{y}^T\bm{\Sigma
 
 \subsection{Singular Value Decomposition}
 \begin{theorem}
-  For any given real matrix $A\in\mathbb{R}^{n\times m}$, there exists a unique set of matrices $U, S, V$ such that
+  For any given real matrix $\bm{A}\in\mathbb{R}^{n\times m}$, there exists a unique set of matrices $\bm{U}, \bm{S}, \bm{V}$ such that
   \begin{equation}
-    A = USV^T
+    \bm{A} = \bm{USV}^T
   \end{equation}
-  where $U\in\mathbb{R}^{n\times n}$ and $S\in\mathbb{R}^{n\times p}$ and $V\in\mathbb{R}^{p\times p}$ $U^TU=I$ and $V^TV=I$. This is called the \emph{singular value decomposition} of $A$.
+  where $\bm{U}\in\mathbb{R}^{n\times n}$ and $\bm{S}\in\mathbb{R}^{n\times p}$ and $\bm{V}\in\mathbb{R}^{p\times p}$ $\bm{U}^T\bm{U}=\bm{I}$ and $\bm{V}^T\bm{V}=\bm{I}$. This is called the \emph{singular value decomposition} of $\bm{A}$.
 \end{theorem}
-$U$ and $V$ are orthonormal matrices. $S$ is a diagonal matrix\footnote{More precisely, it is a rectangular diagonal matrix because $n$ may not equal to $p$. Still, $S_{ij}=0$ if $i\neq j$.}. The elements in $S$ are called \emph{singular values} of $A$. The eigenvectors of $A^TA$ are columns of $V$, and the eigenvectors of $AA^T$ are columns of $U$. The entries in $S$ are positive, and sorted in decreasing order ($S_{11}\geq S_{22}\geq\cdots$).
+$\bm{U}$ and $\bm{V}$ are orthonormal matrices. $\bm{S}$ is a diagonal matrix\footnote{More precisely, it is a rectangular diagonal matrix because $n$ may not equal to $p$. Still, $S_{ij}=0$ if $i\neq j$.}. The elements in $\bm{S}$ are called \emph{singular values} of $\bm{A}$. The eigenvectors of $\bm{A}^T\bm{A}$ are columns of $\bm{V}$, and the eigenvectors of $\bm{A}\bm{A}^T$ are columns of $\bm{U}$. The entries in $\bm{S}$ are positive, and sorted in decreasing order ($S_{11}\geq S_{22}\geq\cdots$).
 
 \subsection{Similar}
 \begin{definition}[Similar]
-  An $n\times n$ matrix $A$ is \emph{similar} to an $n\times n$ matrix $B$ (denoted as $A\sim B$) if there exists an invertible matrix $P$ such that $P^{-1}AP=B$.
+  An $n\times n$ matrix $\bm{A}$ is \emph{similar} to an $n\times n$ matrix $\bm{B}$ (denoted as $\bm{A}\sim \bm{B}$) if there exists an invertible matrix $\bm{P}$ such that $\bm{P}^{-1}\bm{A}\bm{P}=\bm{B}$.
 \end{definition}
 
-The intuition behind matrix similarity is that the two matrices represent the same linear operator with respect to (possibly) different bases. The matrix $P$ can be viewed as a change-of-basis matrix. 
+The intuition behind matrix similarity is that the two matrices represent the same linear operator with respect to (possibly) different bases. The matrix $\bm{P}$ can be viewed as a change-of-basis matrix. 
 
-\noindent\underline{\textit{Properties of Matrix Similarity}}:
-\begin{enumerate}[label=\theenumi)]
-    \item $\bm{A}(\bm{BC})=(\bm{AB})\bm{C}$
-    \item $\bm{A}(\bm{B}+\bm{C})=\bm{AB} + \bm{AC}$
-    \item $(\bm{A+B})\bm{C}=\bm{AC} + \bm{BC}$
-    \item $s\bm{AB}=\bm{A}s\bm{B}$
-    \item $\bm{IA}=\bm{AI}=\bm{A}$
-\end{enumerate}
+\begin{theorem}
+  All similar matrices have the same eigenvalues. \\
+\end{theorem}
+  \begin{proof}
+    Suppose $\bm{A}\sim \bm{B}$ with $\bm{B}=\bm{P}^{-1}\bm{AP}$, and $\bm{B}\bm{x}=\lambda\bm{x}$. Then $\bm{P}^{-1}\bm{APx}=\lambda\bm{x}$. Then $\bm{APx}=\lambda\bm{P}\bm{x}$, which means $\bm{A}$ also has eigenvalue $\lambda$ (but with eigenvector $\bm{Px}$).
+  \end{proof}
+  \noindent Note that some matrices have the same eigenvalues, but they are not similar.
+  
+\begin{theorem}[Determine Matrix Similarity\footnote{Reference: \url{http://kom.aau.dk/~jakob/selPubl/papers1995/ijmest_1995.pdf}}]
+  Two square matrices are similar if and only if they have the same \emph{Jordan normal form}.
+\end{theorem}
+%% \begin{corollary}
+%%   Two square matrices $\bm{A}$ and $\bm{B}$ are similar only if they have the same eigenvalues, and the algebraic multiplicity of any eigenvalue $\lambda$ for $\bm{A}$ equals the algebraic multiplicity of $\lambda$ for $\bm{B}$.
+%% \end{corollary}
+%% \begin{corollary}
+%%   Two square matrices $\bm{A}$ and $\bm{B}$ are similar only if they have the same eigenvalues, and the geometric multiplicity of any eigenvalue $\lambda$ for $\bm{A}$ equals the geometric multiplicity of $\lambda$ for $\bm{B}$.
+%% \end{corollary}
+\noindent There are multiple corollaries from this theorem in the reference.
+
 
 
 \subsection{Jordan Normal Form}
+\begin{definition}[Jordan Normal Form\footnote{Reference: \url{http://mathworld.wolfram.com/JordanCanonicalForm.html}. Jordan normal form is named after French mathematician Camille Jordan.}] The \emph{Jordan normal form} of a linear transformation $T: \mathcal{V}\rightarrow\mathcal{V}$ is a special type of block matrix in which each block consists of Jordan blocks with possibly differing constants $\lambda_i$. In particular, it is a block matrix of the form:
+  \begin{align}
+    \bm{J}=
+    \begin{bmatrix}
+    \bm{J_1} & 0        & \cdots & 0\\
+    0        & \bm{J_2} & \cdots & 0\\
+    \vdots   & \vdots  & \ddots & \vdots\\
+    0        & 0  &  \cdots    & \bm{J_p}
+    \end{bmatrix}
+  \end{align}
+  where every $\bm{J_k}$ is a block matrix (Jordan block), defined as:
+  \begin{align}
+    \bm{J_k}=\begin{bmatrix}
+      \lambda_k & 1        & 0         & \cdots & 0         &\\    %    &           &           &   &        &\\
+      0        & \lambda_k & 1         & \ddots & 0         &\\    %    &           &           &   &        &\\
+      0        & 0         & \lambda_k & \ddots & 0         &\\    %    &           &           &   &        &\\
+      \vdots   & \ddots    & \ddots    & \ddots & 1         &\\   %     &           &           &   &        &\\
+      0        & 0         & 0         & \cdots & \lambda_k &\\   %     &           &           &   &        &\\
+    \end{bmatrix}
+  \end{align}
+\end{definition}
+
 \subsection{Hermitian}
+\begin{definition}
+  A \emph{Hermitian matrix} (or self-adjoint matrix) $\bm{A}$ is a complex square matrix that is equal to its own conjugate transpose, namely,
+  \begin{align}
+    \bm{A}=\bm{A}^H
+  \end{align}
+\end{definition}
+\noindent For properties, refer to \href{https://en.wikipedia.org/wiki/Hermitian_matrix#Properties}{Wikipedia}.
 \subsection{Discrete Fourier Transform}
+The $N\times N$ DFT matrx is given by $$\bm{F}_N=[e_{nk}]$$ where $n=0,1,\cdots,5$, $k=0,1,\cdots,5$, and
+$e_{nk}=e^{-inx_k}=e^{-i2\pi nk/N}$.
+Define
+\begin{align}
+  w=e^{-i2\pi /N}=e^{-i\pi /4}=\frac{(1-i)}{\sqrt{2}}
+\end{align}
+\begin{align}
+  w^{nk}=\Big(\frac{(1-i)}{\sqrt{2}}\Big)^{nk}
+\end{align}
+The inverse inverse $N\times N$ DFT.
+\begin{align}
+  \bm{F}_6^{-1}=\overline{\bm{F}_{N}}
+\end{align}
+where
+\begin{align}
+  \overline{\bm{F}_{N}}=\frac{1}{N}[\overline{w}^{nk}]
+\end{align}
+\noindent More details will be on my review of Fourier Series and Fourier Transform.
+

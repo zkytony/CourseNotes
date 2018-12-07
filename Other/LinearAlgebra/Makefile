@@ -1,7 +1,7 @@
 TARGET = main
 pdf:
-	xelatex $(TARGET) && bibtex $(TARGET) && xelatex $(TARGET) && \
-	xelatex $(TARGET)
+	pdflatex $(TARGET) && bibtex $(TARGET) && pdflatex $(TARGET) && \
+	pdflatex $(TARGET)
 
 quick:
 	xelatex $(TARGET)

@@ -105,6 +105,20 @@ A matrix $\bm{A}$ has the property that for all $\bm{v}, \bm{W}\in\mathbb{R}^2$,
 \end{theorem}
 
 \subsubsection{Conjugate Transpose}
+\begin{definition}[Conjugate Transpose]
+  Given an $n\times n$ matrix $\bm{A}$ with complex entries (i.e. entries are complex numbers), the \emph{conjugate transpose} (or Hermitian transpose, Hermitian conjugate) of $\bm{A}$ is given by
+  \begin{align}
+    \bm{A}^H=\Big(\bar{\bm{A}}\Big)^T
+  \end{align}
+where $\bar{\bm{A}}$ has the complex conjugate entries of $\bm{A}$.
+\end{definition}
+\noindent\underline{\textit{Properties of Conjugate Transpose}}:
+\begin{enumerate}[label=\theenumi)]
+    \item $(\bm{A}+\bm{B})^H = \bm{A}^H+\bm{B}^H$
+    \item $(s\bm{A})^H = s(\bm{A}^H)$
+    \item $(\bm{AC})^H = \bm{C}^H\bm{A}^H$
+\end{enumerate}
+
 
 \subsection{Inverse}
 \begin{definition}[Invertibility]

@@ -141,9 +141,22 @@ For $\bm{Q}=(\bm{X}-\mathbb{E}[\bm{X}])^T\bm{y}$. Therefore, $\bm{y}^T\bm{\Sigma
 $U$ and $V$ are orthonormal matrices. $S$ is a diagonal matrix\footnote{More precisely, it is a rectangular diagonal matrix because $n$ may not equal to $p$. Still, $S_{ij}=0$ if $i\neq j$.}. The elements in $S$ are called \emph{singular values} of $A$. The eigenvectors of $A^TA$ are columns of $V$, and the eigenvectors of $AA^T$ are columns of $U$. The entries in $S$ are positive, and sorted in decreasing order ($S_{11}\geq S_{22}\geq\cdots$).
 
 \subsection{Similar}
+\begin{definition}[Similar]
+  An $n\times n$ matrix $A$ is \emph{similar} to an $n\times n$ matrix $B$ (denoted as $A\sim B$) if there exists an invertible matrix $P$ such that $P^{-1}AP=B$.
+\end{definition}
 
+The intuition behind matrix similarity is that the two matrices represent the same linear operator with respect to (possibly) different bases. The matrix $P$ can be viewed as a change-of-basis matrix. 
 
+\noindent\underline{\textit{Properties of Matrix Similarity}}:
+\begin{enumerate}[label=\theenumi)]
+    \item $\bm{A}(\bm{BC})=(\bm{AB})\bm{C}$
+    \item $\bm{A}(\bm{B}+\bm{C})=\bm{AB} + \bm{AC}$
+    \item $(\bm{A+B})\bm{C}=\bm{AC} + \bm{BC}$
+    \item $s\bm{AB}=\bm{A}s\bm{B}$
+    \item $\bm{IA}=\bm{AI}=\bm{A}$
+\end{enumerate}
 
 
 \subsection{Jordan Normal Form}
 \subsection{Hermitian}
+\subsection{Discrete Fourier Transform}
